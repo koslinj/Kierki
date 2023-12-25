@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="koslin.jan.projekt.client.LoginController"
+      fx:id="root"
+>
+    <Label text="Enter your name:"/>
+    <TextField fx:id="nameInput"/>
+    <Button text="Submit" onAction="#handleSubmit"/>
+</VBox>
