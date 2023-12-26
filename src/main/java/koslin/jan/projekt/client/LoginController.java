@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,7 +15,15 @@ import java.net.Socket;
 public class LoginController {
 
     @FXML
-    private TextField nameInput;
+    private TextField usernameInputLogin;
+    @FXML
+    private TextField passwordInputLogin;
+    @FXML
+    private TextField usernameInputRegister;
+    @FXML
+    private TextField passwordInputRegister;
+    @FXML
+    private Label errorLabel;
     @FXML
     private VBox root;
 
@@ -29,15 +38,21 @@ public class LoginController {
     }
 
     @FXML
-    private void handleSubmit(ActionEvent event) {
-        String name = nameInput.getText();
-        client.setPlayerName(name);
+    private void handleSubmitLogin(ActionEvent event) {
+        String username = usernameInputLogin.getText();
+        String password = passwordInputLogin.getText();
+        client.login(username, password);
+    }
 
-        Parent root = client.roomsController.getRoot();
-        client.roomsController.setWelcomeMessage(name);
+    @FXML
+    private void handleSubmitRegister(ActionEvent event) {
+        String username = usernameInputRegister.getText();
+        String password = passwordInputRegister.getText();
+        client.register(username, password);
+    }
 
-        Scene welcomeScene = new Scene(root);
-        client.primaryStage.setScene(welcomeScene);
+    public void setErrorLabel(String str) {
+        errorLabel.setText(str);
     }
 }
 

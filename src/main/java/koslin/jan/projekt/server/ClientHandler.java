@@ -28,12 +28,15 @@ public class ClientHandler extends Thread {
             while (player.getClientSocket().isConnected()) {
                 Message message = (Message) in.readObject();
                 if(message.getType() == DataType.QUIT){
-                    allPlayers.get(player.getPlayerId()).getOutputStream().writeObject(message);
-                    allPlayers.get(player.getPlayerId()).getOutputStream().flush();
-                    allPlayers.remove(player.getPlayerId());
+                    handleQuitMessage(message);
                     break;
+                } else if (message.getType() == DataType.LOGIN) {
+                    handleLoginMessage(message);
+                } else if (message.getType() == DataType.REGISTER) {
+                    handleRegisterMessage(message);
+                } else if (message.getType() == DataType.ROOM){
+                    handleRoomMessage(message);
                 }
-                handleMessage(message);
             }
 
             in.close();
@@ -44,43 +47,48 @@ public class ClientHandler extends Thread {
 
     }
 
-    private void handleMessage(Message message) throws IOException {
+    private void handleQuitMessage(Message message) throws IOException {
+        player.getOutputStream().writeObject(message);
+        player.getOutputStream().flush();
+        allPlayers.remove(player.getPlayerId());
+    }
+
+    private void handleLoginMessage(Message message) throws IOException {
+        if(message.getUsername().equals(player.getUsername()) && message.getPassword().equals(player.getPassword())){
+            Message res = new Message.Builder(DataType.LOGIN)
+                    .success(true)
+                    .username(player.getUsername())
+                    .build();
+            player.getOutputStream().writeObject(res);
+            player.getOutputStream().flush();
+        } else {
+            Message res = new Message.Builder(DataType.LOGIN)
+                    .success(false)
+                    .build();
+            player.getOutputStream().writeObject(res);
+            player.getOutputStream().flush();
+        }
+    }
+
+    private void handleRegisterMessage(Message message){
+        player.setUsername(message.getUsername());
+        player.setPassword(message.getPassword());
+    }
+
+    private void handleRoomMessage(Message message) throws IOException {
         if (message.isJoin()) {
-            player.setPlayerName(message.getPlayerName());
-            allPlayers.get(player.getPlayerId()).setRoomId(message.getRoomId());
+            //player.setUsername(message.getUsername());
+            player.setRoomId(message.getRoomId());
             Room room = roomManager.getRooms().get(message.getRoomId());
             room.addPlayer(player);
-            message.setAmountOfPlayers(room.getAmountOfPlayers());
-
-            for(Player p : room.getPlayers().values()){
-                Message res = new Message.Builder(DataType.GAME)
-                        .playerId(player.getPlayerId())
-                        .playerName(player.getPlayerName())
-                        .build();
-
-                if(p!=player){
-                    p.getOutputStream().writeObject(res);
-                    p.getOutputStream().flush();
-                }
-            }
-
-            for(Player p : room.getPlayers().values()){
-                Message res = new Message.Builder(DataType.GAME)
-                        .playerId(p.getPlayerId())
-                        .playerName(p.getPlayerName())
-                        .build();
-
-                player.getOutputStream().writeObject(res);
-                player.getOutputStream().flush();
-            }
 
         } else {
-            Room room = roomManager.addRoom(message);
-            message.setRoomId(room.getRoomId());
+            roomManager.addRoom(message);
         }
 
+        RoomManager res = (RoomManager) roomManager.clone();
         for(Player p : allPlayers.values()){
-            p.getOutputStream().writeObject(message);
+            p.getOutputStream().writeObject(res);
             System.out.println("ID pokoju -> " + message.getRoomId());
             System.out.println("Pokój gracza " + p.getPlayerId() + " -> " + p.getRoomId());
             p.getOutputStream().flush();

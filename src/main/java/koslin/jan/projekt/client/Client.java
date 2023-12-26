@@ -1,5 +1,6 @@
 package koslin.jan.projekt.client;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Client {
     private String playerName;
+    private int playerId;
     private Socket server;
     private ObjectOutputStream out;
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
@@ -37,13 +39,55 @@ public class Client {
         }
     }
 
-    public void startReceiver(){
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
+    public void startReceiver() {
         Receiver receiver = new Receiver(this, server);
         pool.execute(receiver);
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void login(String username, String password) {
+        Message message = new Message.Builder(DataType.LOGIN)
+                .playerId(playerId)
+                .username(username)
+                .password(password)
+                .build();
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println("FAILED TO SEND MESSAGE");
+            e.printStackTrace();
+        }
+    }
+
+    public void handleLoginResponse(Message message) {
+        if (message.isSuccess()) {
+            Parent root = roomsController.getRoot();
+            roomsController.setWelcomeMessage(message.getUsername());
+
+            Scene rooms = new Scene(root);
+            primaryStage.setScene(rooms);
+        } else {
+            loginController.setErrorLabel("NIE UDAŁO SIĘ ZALOGOWAĆ");
+        }
+    }
+
+    public void register(String username, String password) {
+        Message message = new Message.Builder(DataType.REGISTER)
+                .playerId(playerId)
+                .username(username)
+                .password(password)
+                .build();
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println("FAILED TO SEND MESSAGE");
+            e.printStackTrace();
+        }
     }
 
     public void addRoom(String name) {
@@ -63,7 +107,7 @@ public class Client {
         Message message = new Message.Builder(DataType.ROOM)
                 .roomName(roomName)
                 .roomId(id)
-                .playerName(playerName)
+                .username(playerName)
                 .join(true)
                 .build();
         try {

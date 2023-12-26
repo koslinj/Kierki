@@ -9,7 +9,18 @@
       fx:controller="koslin.jan.projekt.client.LoginController"
       fx:id="root"
 >
-    <Label text="Enter your name:"/>
-    <TextField fx:id="nameInput"/>
-    <Button text="Submit" onAction="#handleSubmit"/>
+    <Label text="Enter your username:"/>
+    <TextField fx:id="usernameInputLogin"/>
+    <Label text="Enter your password:"/>
+    <TextField fx:id="passwordInputLogin"/>
+    <Button text="Submit" onAction="#handleSubmitLogin"/>
+
+    <Label text="REGISTER" />
+    <Label text="Enter your username:"/>
+    <TextField fx:id="usernameInputRegister"/>
+    <Label text="Enter your password:"/>
+    <TextField fx:id="passwordInputRegister"/>
+    <Button text="Submit" onAction="#handleSubmitRegister"/>
+
+    <Label fx:id="errorLabel" />
 </VBox>

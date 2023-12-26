@@ -23,24 +23,29 @@ public class Server {
             Player player = new Player(client, clientId);
             allPlayers.put(clientId, player);
 
-            sendStartingState(roomManager, player.getOutputStream());
+            sendStartingState(clientId, player.getOutputStream());
 
             new ClientHandler(player, roomManager, allPlayers).start();
             clientId++;
         }
     }
 
-    private void sendStartingState(RoomManager roomManager, ObjectOutputStream out) throws IOException {
-        System.out.println(roomManager.getRooms().size());
-        for (Room room : roomManager.getRooms().values()) {
-            Message message = new Message.Builder(DataType.ROOM)
-                    .roomName(room.getRoomName())
-                    .roomId(room.getRoomId())
-                    .amountOfPlayers(room.getAmountOfPlayers())
-                    .build();
-            out.writeObject(message);
-            out.flush();
-        }
+    private void sendStartingState(int clientId, ObjectOutputStream out) throws IOException {
+        Message message = new Message.Builder(DataType.REGISTER)
+                .playerId(clientId)
+                .build();
+        out.writeObject(message);
+        out.flush();
+//        System.out.println(roomManager.getRooms().size());
+//        for (Room room : roomManager.getRooms().values()) {
+//            Message message = new Message.Builder(DataType.ROOM)
+//                    .roomName(room.getRoomName())
+//                    .roomId(room.getRoomId())
+//                    .amountOfPlayers(room.getAmountOfPlayers())
+//                    .build();
+//            out.writeObject(message);
+//            out.flush();
+//        }
     }
 
 

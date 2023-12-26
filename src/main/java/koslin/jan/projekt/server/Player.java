@@ -1,7 +1,5 @@
 package koslin.jan.projekt.server;
 
-import koslin.jan.projekt.client.Client;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -10,7 +8,8 @@ public class Player {
     private final Socket clientSocket;
     private final ObjectOutputStream outputStream;
     private final int playerId;
-    private String playerName;
+    private String username;
+    private String password;
     private int roomId;
 
     public Player(Socket clientSocket, int id) throws IOException {
@@ -32,8 +31,8 @@ public class Player {
         return playerId;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getUsername() {
+        return username;
     }
 
     public int getRoomId() {
@@ -44,7 +43,15 @@ public class Player {
         this.roomId = roomId;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

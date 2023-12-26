@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import koslin.jan.projekt.DataType;
 import koslin.jan.projekt.Message;
+import koslin.jan.projekt.Room;
+import koslin.jan.projekt.RoomManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,30 +42,41 @@ public class RoomsController {
         welcomeLabel.setText("Welcome, " + name + "!");
     }
 
-    public void addToRoot(Node n){
-        root.getChildren().add(n);
-    }
-
     public void setClient(Client client) {
         this.client = client;
     }
 
-    public void updateUI(Message message){
-        if (message.isJoin()) {
-            Platform.runLater(() -> {
-                Button roomButton = roomsButtons.get(message.getRoomId());
-                roomButton.setText(message.getRoomName() + " -> " + message.getAmountOfPlayers() + " of 4");
-            });
-        } else {
-            Platform.runLater(() -> {
-                Button roomButton = new Button(message.getRoomName() + " -> " + message.getAmountOfPlayers() + " of 4");
+    public void updateUI(RoomManager roomManager) {
+        Platform.runLater(() -> {
+            for (Button b : roomsButtons.values()) {
+                root.getChildren().remove(b);
+            }
+        });
+
+
+        Platform.runLater(() -> {
+            for (Room r : roomManager.getRooms().values()) {
+                Button roomButton = new Button(r.getRoomName() + " -> " + r.getPlayers().size() + " of 4");
                 roomButton.setOnAction(event -> {
-                    client.joinRoom(message.getRoomId(), message.getRoomName());
+                    client.joinRoom(r.getRoomId(), r.getRoomName());
                 });
-                addToRoot(roomButton);
-                roomsButtons.put(message.getRoomId(), roomButton);
-            });
-        }
+                root.getChildren().add(roomButton);
+                roomsButtons.put(r.getRoomId(), roomButton);
+            }
+        });
+
+
+//        if (roomManager.isJoin()) {
+//            Button roomButton = roomsButtons.get(roomManager.getRoomId());
+//            roomButton.setText(roomManager.getRoomName() + " -> " + roomManager.getAmountOfPlayers() + " of 4");
+//        } else {
+//            Button roomButton = new Button(roomManager.getRoomName() + " -> " + roomManager.getAmountOfPlayers() + " of 4");
+//            roomButton.setOnAction(event -> {
+//                client.joinRoom(roomManager.getRoomId(), roomManager.getRoomName());
+//            });
+//            addToRoot(roomButton);
+//            roomsButtons.put(roomManager.getRoomId(), roomButton);
+//        }
     }
 }
 

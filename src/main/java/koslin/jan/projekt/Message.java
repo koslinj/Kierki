@@ -8,7 +8,9 @@ public class Message implements Serializable {
     private int roomId;
     private int amountOfPlayers;
     private int playerId;
-    private String playerName;
+    private String username;
+    private String password;
+    private boolean success;
     private boolean join;
 
     // private constructor to enforce the use of the builder
@@ -18,8 +20,10 @@ public class Message implements Serializable {
         this.roomId = builder.roomId;
         this.amountOfPlayers = builder.amountOfPlayers;
         this.playerId = builder.playerId;
-        this.playerName = builder.playerName;
+        this.username = builder.username;
+        this.password = builder.password;
         this.join = builder.join;
+        this.success = builder.success;
     }
 
     // getters
@@ -43,12 +47,20 @@ public class Message implements Serializable {
         return playerId;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public boolean isJoin() {
         return join;
+    }
+
+    public boolean isSuccess() {
+        return success;
     }
 
     public void setAmountOfPlayers(int amountOfPlayers) {
@@ -69,8 +81,10 @@ public class Message implements Serializable {
         private int roomId = 0;
         private int amountOfPlayers = 0;
         private int playerId = 0;
-        private String playerName = "";
+        private String username = "";
+        private String password = "";
         private boolean join = false;
+        private boolean success = false;
 
         // Constructor with necessary property
         public Builder(DataType type) {
@@ -98,13 +112,23 @@ public class Message implements Serializable {
             return this;
         }
 
-        public Builder playerName(String playerName) {
-            this.playerName = playerName;
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
             return this;
         }
 
         public Builder join(boolean join) {
             this.join = join;
+            return this;
+        }
+
+        public Builder success(boolean success) {
+            this.success = success;
             return this;
         }
 

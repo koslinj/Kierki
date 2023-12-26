@@ -40,7 +40,7 @@ public class GameController {
 
     public void updateUI(Message message) {
         Platform.runLater(() -> {
-            Label playerNameLabel = new Label(message.getPlayerName());
+            Label playerNameLabel = new Label(message.getUsername());
 
             addToRoot(playerNameLabel);
             playersNamesLabels.put(message.getPlayerId(), playerNameLabel);
