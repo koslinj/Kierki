@@ -90,9 +90,9 @@ public class Client {
         }
     }
 
-    public void addRoom(String name) {
+    public void addRoom(String roomName) {
         Message message = new Message.Builder(DataType.ROOM)
-                .roomName(name)
+                .roomName(roomName)
                 .build();
         try {
             out.writeObject(message);
@@ -103,11 +103,9 @@ public class Client {
         }
     }
 
-    public void joinRoom(int id, String roomName) {
+    public void joinRoom(int roomId) {
         Message message = new Message.Builder(DataType.ROOM)
-                .roomName(roomName)
-                .roomId(id)
-                .username(playerName)
+                .roomId(roomId)
                 .join(true)
                 .build();
         try {

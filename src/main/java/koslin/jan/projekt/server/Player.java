@@ -2,29 +2,18 @@ package koslin.jan.projekt.server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
-public class Player {
-    private final Socket clientSocket;
-    private final ObjectOutputStream outputStream;
+public class Player implements Serializable {
     private final int playerId;
     private String username;
     private String password;
     private int roomId;
 
     public Player(Socket clientSocket, int id) throws IOException {
-        this.clientSocket = clientSocket;
         this.playerId = id;
-        this.outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.roomId = -1;
-    }
-
-    public Socket getClientSocket() {
-        return clientSocket;
-    }
-
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
     }
 
     public int getPlayerId() {

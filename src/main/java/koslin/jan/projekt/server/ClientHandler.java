@@ -7,25 +7,33 @@ import koslin.jan.projekt.RoomManager;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 
 public class ClientHandler extends Thread {
     private Player player;
+    private final Socket clientSocket;
+    private final ObjectOutputStream outputStream;
     private ObjectInputStream in;
     private RoomManager roomManager;
-    private HashMap<Integer, Player> allPlayers;
+    private HashMap<Integer, ObjectOutputStream> allOutputStreams;
 
-    public ClientHandler(Player player, RoomManager roomManager, HashMap<Integer, Player> players) {
+    public ClientHandler(Player player, Socket clientSocket, ObjectOutputStream outputStream, RoomManager roomManager, HashMap<Integer, ObjectOutputStream> allOutputStreams) throws IOException {
         this.player = player;
+        this.clientSocket = clientSocket;
+        this.outputStream = outputStream;
         this.roomManager = roomManager;
-        this.allPlayers = players;
+        this.allOutputStreams = allOutputStreams;
     }
 
     public void run() {
         try {
-            in = new ObjectInputStream(player.getClientSocket().getInputStream());
+            sendInitialMessage();
 
-            while (player.getClientSocket().isConnected()) {
+            in = new ObjectInputStream(clientSocket.getInputStream());
+
+            while (clientSocket.isConnected()) {
                 Message message = (Message) in.readObject();
                 if(message.getType() == DataType.QUIT){
                     handleQuitMessage(message);
@@ -40,17 +48,25 @@ public class ClientHandler extends Thread {
             }
 
             in.close();
-            player.getClientSocket().close();
+            clientSocket.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
     }
 
+    private void sendInitialMessage() throws IOException {
+        Message message = new Message.Builder(DataType.REGISTER)
+                .playerId(player.getPlayerId())
+                .build();
+        outputStream.writeObject(message);
+        outputStream.flush();
+    }
+
     private void handleQuitMessage(Message message) throws IOException {
-        player.getOutputStream().writeObject(message);
-        player.getOutputStream().flush();
-        allPlayers.remove(player.getPlayerId());
+        outputStream.writeObject(message);
+        outputStream.flush();
+        allOutputStreams.remove(player.getPlayerId());
     }
 
     private void handleLoginMessage(Message message) throws IOException {
@@ -59,14 +75,14 @@ public class ClientHandler extends Thread {
                     .success(true)
                     .username(player.getUsername())
                     .build();
-            player.getOutputStream().writeObject(res);
-            player.getOutputStream().flush();
+            outputStream.writeObject(res);
+            outputStream.flush();
         } else {
             Message res = new Message.Builder(DataType.LOGIN)
                     .success(false)
                     .build();
-            player.getOutputStream().writeObject(res);
-            player.getOutputStream().flush();
+            outputStream.writeObject(res);
+            outputStream.flush();
         }
     }
 
@@ -77,21 +93,17 @@ public class ClientHandler extends Thread {
 
     private void handleRoomMessage(Message message) throws IOException {
         if (message.isJoin()) {
-            //player.setUsername(message.getUsername());
             player.setRoomId(message.getRoomId());
             Room room = roomManager.getRooms().get(message.getRoomId());
             room.addPlayer(player);
-
         } else {
             roomManager.addRoom(message);
         }
 
         RoomManager res = (RoomManager) roomManager.clone();
-        for(Player p : allPlayers.values()){
-            p.getOutputStream().writeObject(res);
-            System.out.println("ID pokoju -> " + message.getRoomId());
-            System.out.println("Pokój gracza " + p.getPlayerId() + " -> " + p.getRoomId());
-            p.getOutputStream().flush();
+        for(ObjectOutputStream os : allOutputStreams.values()){
+            os.writeObject(res);
+            os.flush();
         }
     }
 }

@@ -52,12 +52,13 @@ public class RoomsController {
             for (Button b : roomsButtons.values()) {
                 root.getChildren().remove(b);
             }
+            roomsButtons.clear();
 
             // creating buttons for rooms
             for (Room r : roomManager.getRooms().values()) {
                 Button roomButton = new Button(r.getRoomName() + " -> " + r.getPlayers().size() + " of 4");
                 roomButton.setOnAction(event -> {
-                    client.joinRoom(r.getRoomId(), r.getRoomName());
+                    client.joinRoom(r.getRoomId());
                 });
                 root.getChildren().add(roomButton);
                 roomsButtons.put(r.getRoomId(), roomButton);

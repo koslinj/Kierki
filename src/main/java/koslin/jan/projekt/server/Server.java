@@ -1,8 +1,5 @@
 package koslin.jan.projekt.server;
 
-import koslin.jan.projekt.DataType;
-import koslin.jan.projekt.Message;
-import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 
 import java.io.IOException;
@@ -13,39 +10,20 @@ import java.util.HashMap;
 
 public class Server {
     private ServerSocket serverSocket;
-    private HashMap<Integer, Player> allPlayers = new HashMap<>();
+    private HashMap<Integer, ObjectOutputStream> allOutputStreams = new HashMap<>();
 
     public void start(int port, RoomManager roomManager) throws IOException {
         serverSocket = new ServerSocket(port);
         int clientId = 0;
         while (true) {
             Socket client = serverSocket.accept();
+            ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
             Player player = new Player(client, clientId);
-            allPlayers.put(clientId, player);
+            allOutputStreams.put(clientId, outputStream);
 
-            sendStartingState(clientId, player.getOutputStream());
-
-            new ClientHandler(player, roomManager, allPlayers).start();
+            new ClientHandler(player, client, outputStream, roomManager, allOutputStreams).start();
             clientId++;
         }
-    }
-
-    private void sendStartingState(int clientId, ObjectOutputStream out) throws IOException {
-        Message message = new Message.Builder(DataType.REGISTER)
-                .playerId(clientId)
-                .build();
-        out.writeObject(message);
-        out.flush();
-//        System.out.println(roomManager.getRooms().size());
-//        for (Room room : roomManager.getRooms().values()) {
-//            Message message = new Message.Builder(DataType.ROOM)
-//                    .roomName(room.getRoomName())
-//                    .roomId(room.getRoomId())
-//                    .amountOfPlayers(room.getAmountOfPlayers())
-//                    .build();
-//            out.writeObject(message);
-//            out.flush();
-//        }
     }
 
 
