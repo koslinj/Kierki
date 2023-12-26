@@ -48,13 +48,12 @@ public class RoomsController {
 
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
+            // cleaning UI
             for (Button b : roomsButtons.values()) {
                 root.getChildren().remove(b);
             }
-        });
 
-
-        Platform.runLater(() -> {
+            // creating buttons for rooms
             for (Room r : roomManager.getRooms().values()) {
                 Button roomButton = new Button(r.getRoomName() + " -> " + r.getPlayers().size() + " of 4");
                 roomButton.setOnAction(event -> {
@@ -64,19 +63,6 @@ public class RoomsController {
                 roomsButtons.put(r.getRoomId(), roomButton);
             }
         });
-
-
-//        if (roomManager.isJoin()) {
-//            Button roomButton = roomsButtons.get(roomManager.getRoomId());
-//            roomButton.setText(roomManager.getRoomName() + " -> " + roomManager.getAmountOfPlayers() + " of 4");
-//        } else {
-//            Button roomButton = new Button(roomManager.getRoomName() + " -> " + roomManager.getAmountOfPlayers() + " of 4");
-//            roomButton.setOnAction(event -> {
-//                client.joinRoom(roomManager.getRoomId(), roomManager.getRoomName());
-//            });
-//            addToRoot(roomButton);
-//            roomsButtons.put(roomManager.getRoomId(), roomButton);
-//        }
     }
 }
 
