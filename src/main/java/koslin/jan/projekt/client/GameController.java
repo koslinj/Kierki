@@ -31,7 +31,6 @@ public class GameController {
     Client client;
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
     ArrayList<ImageView> cardsInGameImages = new ArrayList<>();
-    ArrayList<HBox> imageViewWrappers = new ArrayList<>();
 
     public void setClient(Client client) {
         this.client = client;
@@ -54,15 +53,9 @@ public class GameController {
             Room room = roomManager.getRooms().get(client.getRoomId());
             ArrayList<Player> players = room.getPlayers();
 
-            int i = 0;
-            for (; i < players.size(); i++) {
-                if (players.get(i).getPlayerId() == client.getPlayerId()) {
-                    break;
-                }
-            }
+            int i = getIndexOfPlayer(players);
             for (int k = 0; k < players.size(); k++) {
-                int index = k - i;
-                if (index < 0) index += NUMBER_OF_PLAYERS;
+                int index = calculatePlace(i, k);
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
 
                 String card = room.getCardsInGame().get(players.get(k).getPlayerId());
@@ -73,37 +66,53 @@ public class GameController {
             }
 
             if (players.size() == NUMBER_OF_PLAYERS) {
-                //gameInfo.setText("POKÓJ PEŁEN -> START GRY");
                 // cleaning UI
-                for(HBox node : imageViewWrappers){
-                    cardsContainer.getChildren().remove(node);
-                }
-                imageViewWrappers.clear();
+                cardsContainer.getChildren().clear();
 
                 // creating images for cards
                 for (String card : players.get(i).getCards()) {
+                    ImageView imageView = getImageView(card);
+                    HBox imageViewWrapper = getHBox(card, imageView);
 
-                    // Load and add 13 images to the HBox
-                    Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 90, true, true);
-                    ImageView imageView = new ImageView(image);
-
-                    //Inner border
-                    HBox imageViewWrapper = new HBox();
-                    imageViewWrapper.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
-                    imageViewWrapper.getChildren().add(imageView);
-                    imageViewWrapper.setOnMouseClicked(event -> {
-                        System.out.println(card);
-                        client.chooseCard(card);
-                    });
-
-                    // Set negative margin to overlap images by 15px
-                    HBox.setMargin(imageView, new javafx.geometry.Insets(0, 0, -1, 0));
-                    HBox.setMargin(imageViewWrapper, new javafx.geometry.Insets(0, 0, 0, -25));
                     cardsContainer.getChildren().add(imageViewWrapper);
-                    imageViewWrappers.add(imageViewWrapper);
                 }
             }
         });
+    }
+
+    private static int calculatePlace(int i, int k) {
+        int index = k - i;
+        if (index < 0) index += NUMBER_OF_PLAYERS;
+        return index;
+    }
+
+    private int getIndexOfPlayer(ArrayList<Player> players) {
+        int i = 0;
+        for (; i < players.size(); i++) {
+            if (players.get(i).getPlayerId() == client.getPlayerId()) {
+                break;
+            }
+        }
+        return i;
+    }
+
+    private HBox getHBox(String card, ImageView imageView) {
+        HBox imageViewWrapper = new HBox();
+        imageViewWrapper.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
+        imageViewWrapper.getChildren().add(imageView);
+        imageViewWrapper.setOnMouseClicked(event -> {
+            System.out.println(card);
+            client.chooseCard(card);
+        });
+        HBox.setMargin(imageViewWrapper, new javafx.geometry.Insets(0, 0, 0, -25));
+        return imageViewWrapper;
+    }
+
+    private ImageView getImageView(String card) {
+        Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 90, true, true);
+        ImageView imageView = new ImageView(image);
+        HBox.setMargin(imageView, new javafx.geometry.Insets(0, 0, -1, 0));
+        return imageView;
     }
 
     public void showGameBoard() {
