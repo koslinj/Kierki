@@ -70,10 +70,21 @@ public class ClientHandler extends Thread {
     }
 
     private void handleLoginMessage(Message message) throws IOException {
+        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
+//        Message res = new Message.Builder(DataType.LOGIN)
+//                .success(true)
+//                .username(message.getUsername())
+//                .build();
+//        outputStream.writeObject(res);
+//        outputStream.flush();
+//
+//        RoomManager res2 = (RoomManager) roomManager.clone();
+//        outputStream.writeObject(res2);
+//        outputStream.flush();
         if(message.getUsername().equals(player.getUsername()) && message.getPassword().equals(player.getPassword())){
             Message res = new Message.Builder(DataType.LOGIN)
                     .success(true)
-                    .username(player.getUsername())
+                    .username(message.getUsername())
                     .build();
             outputStream.writeObject(res);
             outputStream.flush();

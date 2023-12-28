@@ -11,6 +11,7 @@
       fx:controller="koslin.jan.projekt.client.GameController"
       fx:id="root">
     <children>
+        <Label layoutX="260.0" layoutY="20.0" fx:id="gameInfo" />
         <Label layoutX="300.0" layoutY="367.0" fx:id="player1"/>
         <Label layoutX="132.0" layoutY="240.0" fx:id="player2"/>
         <Label layoutX="300.0" layoutY="91.0" fx:id="player3"/>
