@@ -3,6 +3,7 @@ package koslin.jan.projekt.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,19 +28,21 @@ public class GameController {
     public Label player2;
     public Label player3;
     public Label player4;
+    public ImageView card1;
+    public ImageView card2;
+    public ImageView card3;
+    public ImageView card4;
     public Pane root;
     public Label gameInfo;
+    public HBox cardsContainer;
 
     Client client;
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
+    ArrayList<ImageView> cardsInGameImages = new ArrayList<>();
+    ArrayList<HBox> imageViewWrappers = new ArrayList<>();
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    @FXML
-    private void handleReady(ActionEvent event) {
-        System.out.println("SUPER");
     }
 
     public void initialize() {
@@ -47,6 +50,11 @@ public class GameController {
         playersNamesLabels.add(player2);
         playersNamesLabels.add(player3);
         playersNamesLabels.add(player4);
+
+        cardsInGameImages.add(card1);
+        cardsInGameImages.add(card2);
+        cardsInGameImages.add(card3);
+        cardsInGameImages.add(card4);
     }
 
     public void updateUI(RoomManager roomManager) {
@@ -64,14 +72,23 @@ public class GameController {
                 int index = k - i;
                 if (index < 0) index += NUMBER_OF_PLAYERS;
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
+
+                String card = room.getCardsInGame().get(players.get(k).getPlayerId());
+                if(card != null){
+                    Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 110, true, true);
+                    cardsInGameImages.get(index).setImage(image);
+                }
             }
 
             if (players.size() == NUMBER_OF_PLAYERS) {
-                gameInfo.setText("POKÓJ PEŁEN -> START GRY");
+                //gameInfo.setText("POKÓJ PEŁEN -> START GRY");
+                // cleaning UI
+                for(HBox node : imageViewWrappers){
+                    cardsContainer.getChildren().remove(node);
+                }
+                imageViewWrappers.clear();
 
-                HBox hbox = new HBox();
-                hbox.setLayoutX(70);
-                hbox.setLayoutY(400);
+                // creating images for cards
                 for (String card : players.get(client.getPlayerId()).getCards()) {
 
                     // Load and add 13 images to the HBox
@@ -79,16 +96,20 @@ public class GameController {
                     ImageView imageView = new ImageView(image);
 
                     //Inner border
-                    HBox hBox_inner = new HBox();
-                    hBox_inner.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
-                    hBox_inner.getChildren().add(imageView);
+                    HBox imageViewWrapper = new HBox();
+                    imageViewWrapper.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
+                    imageViewWrapper.getChildren().add(imageView);
+                    imageViewWrapper.setOnMouseClicked(event -> {
+                        System.out.println(card);
+                        client.chooseCard(card);
+                    });
 
                     // Set negative margin to overlap images by 15px
-                    HBox.setMargin(imageView, new javafx.geometry.Insets(0, 0, 0, 0));
-                    HBox.setMargin(hBox_inner, new javafx.geometry.Insets(0, 0, 0, -25));
-                    hbox.getChildren().add(hBox_inner);
+                    HBox.setMargin(imageView, new javafx.geometry.Insets(0, 0, -1, 0));
+                    HBox.setMargin(imageViewWrapper, new javafx.geometry.Insets(0, 0, 0, -25));
+                    cardsContainer.getChildren().add(imageViewWrapper);
+                    imageViewWrappers.add(imageViewWrapper);
                 }
-                root.getChildren().add(hbox);
             }
         });
     }

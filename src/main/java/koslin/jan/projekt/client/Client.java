@@ -130,6 +130,19 @@ public class Client {
         }
     }
 
+    public void chooseCard(String card) {
+        Message message = new Message.Builder(DataType.GAME)
+                .card(card)
+                .build();
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println("FAILED TO SEND MESSAGE");
+            e.printStackTrace();
+        }
+    }
+
     public void quit() {
         //Message message = new Message(true, false);
         Message message = new Message.Builder(DataType.QUIT).build();

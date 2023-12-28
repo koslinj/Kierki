@@ -14,11 +14,13 @@ public class Room implements Serializable {
     private String roomName;
     private int roomId;
     private final ArrayList<Player> players;
+    private HashMap<Integer, String> cardsInGame;
 
     public Room(String roomName, int roomId) {
         this.roomName = roomName;
         this.roomId = roomId;
         this.players = new ArrayList<>();
+        this.cardsInGame = new HashMap<>();
     }
 
     public String getRoomName() {
@@ -31,6 +33,10 @@ public class Room implements Serializable {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public HashMap<Integer, String> getCardsInGame() {
+        return cardsInGame;
     }
 
     public void addPlayer(Player player){

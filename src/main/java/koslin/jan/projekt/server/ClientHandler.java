@@ -35,15 +35,17 @@ public class ClientHandler extends Thread {
 
             while (clientSocket.isConnected()) {
                 Message message = (Message) in.readObject();
-                if(message.getType() == DataType.QUIT){
+                if (message.getType() == DataType.QUIT) {
                     handleQuitMessage(message);
                     break;
                 } else if (message.getType() == DataType.LOGIN) {
                     handleLoginMessage(message);
                 } else if (message.getType() == DataType.REGISTER) {
                     handleRegisterMessage(message);
-                } else if (message.getType() == DataType.ROOM){
+                } else if (message.getType() == DataType.ROOM) {
                     handleRoomMessage(message);
+                } else if (message.getType() == DataType.GAME) {
+                    handleGameMessage(message);
                 }
             }
 
@@ -81,7 +83,7 @@ public class ClientHandler extends Thread {
 //        RoomManager res2 = (RoomManager) roomManager.clone();
 //        outputStream.writeObject(res2);
 //        outputStream.flush();
-        if(message.getUsername().equals(player.getUsername()) && message.getPassword().equals(player.getPassword())){
+        if (message.getUsername().equals(player.getUsername()) && message.getPassword().equals(player.getPassword())) {
             Message res = new Message.Builder(DataType.LOGIN)
                     .success(true)
                     .username(message.getUsername())
@@ -101,7 +103,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void handleRegisterMessage(Message message){
+    private void handleRegisterMessage(Message message) {
         player.setUsername(message.getUsername());
         player.setPassword(message.getPassword());
     }
@@ -116,7 +118,19 @@ public class ClientHandler extends Thread {
         }
 
         RoomManager res = (RoomManager) roomManager.clone();
-        for(ObjectOutputStream os : allOutputStreams.values()){
+        for (ObjectOutputStream os : allOutputStreams.values()) {
+            os.writeObject(res);
+            os.flush();
+        }
+    }
+
+    private void handleGameMessage(Message message) throws IOException {
+        player.getCards().remove(message.getCard());
+        Room room = roomManager.getRooms().get(player.getRoomId());
+        room.getCardsInGame().put(player.getPlayerId(), message.getCard());
+
+        RoomManager res = (RoomManager) roomManager.clone();
+        for (ObjectOutputStream os : allOutputStreams.values()) {
             os.writeObject(res);
             os.flush();
         }

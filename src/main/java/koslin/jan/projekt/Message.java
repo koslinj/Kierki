@@ -12,6 +12,7 @@ public class Message implements Serializable {
     private String password;
     private boolean success;
     private boolean join;
+    private String card;
 
     // private constructor to enforce the use of the builder
     private Message(Builder builder) {
@@ -24,6 +25,7 @@ public class Message implements Serializable {
         this.password = builder.password;
         this.join = builder.join;
         this.success = builder.success;
+        this.card = builder.card;
     }
 
     // getters
@@ -59,6 +61,10 @@ public class Message implements Serializable {
         return join;
     }
 
+    public String getCard() {
+        return card;
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -85,6 +91,7 @@ public class Message implements Serializable {
         private String password = "";
         private boolean join = false;
         private boolean success = false;
+        private String card = "";
 
         // Constructor with necessary property
         public Builder(DataType type) {
@@ -124,6 +131,11 @@ public class Message implements Serializable {
 
         public Builder join(boolean join) {
             this.join = join;
+            return this;
+        }
+
+        public Builder card(String card) {
+            this.card = card;
             return this;
         }
 
