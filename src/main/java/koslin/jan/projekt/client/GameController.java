@@ -57,27 +57,10 @@ public class GameController {
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
             }
         });
-        System.out.println("UPDATEEE");
     }
 
-    public void showGameBoard(RoomManager roomManager) {
+    public void showGameBoard() {
         Platform.runLater(() -> {
-//            Room room = roomManager.getRooms().get(client.getRoomId());
-//            ArrayList<Player> players = room.getPlayers();
-//
-//            int i = 0;
-//            for(;i < players.size(); i++){
-//                if(players.get(i).getPlayerId() == client.getPlayerId()){
-//                    break;
-//                }
-//            }
-//            for(int k = 0;k < players.size(); k++){
-//                int index = k-i;
-//                if(index < 0) index += 4;
-//                playersNamesLabels.get(index).setText(players.get(k).getUsername());
-//            }
-
-
             Scene game = new Scene(root);
             client.primaryStage.setScene(game);
         });

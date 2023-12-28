@@ -18,7 +18,7 @@ public class Server {
         while (true) {
             Socket client = serverSocket.accept();
             ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
-            Player player = new Player(client, clientId);
+            Player player = new Player(clientId);
             allOutputStreams.put(clientId, outputStream);
 
             new ClientHandler(player, client, outputStream, roomManager, allOutputStreams).start();

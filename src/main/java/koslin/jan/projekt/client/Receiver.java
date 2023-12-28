@@ -26,7 +26,7 @@ public class Receiver implements Runnable {
         try {
             ObjectInputStream in = new ObjectInputStream(server.getInputStream());
             while (server.isConnected()) {
-                Object obj = (Object) in.readObject();
+                Object obj = in.readObject();
                 if (obj instanceof Message message){
                     if (message.getType() == DataType.QUIT) {
                         break;
@@ -37,11 +37,6 @@ public class Receiver implements Runnable {
                             client.handleLoginResponse(message);
                         });
                     }
-//                else if (message.getType() == DataType.ROOM) {
-//                    client.roomsController.updateUI(message);
-//                } else {
-//                    client.gameController.updateUI(message);
-//                }
                 } else if (obj instanceof RoomManager roomManager) {
                     client.roomsController.updateUI(roomManager);
                     if(client.getRoomId() == -1){
@@ -49,7 +44,7 @@ public class Receiver implements Runnable {
                             for(Player p : r.getPlayers()){
                                 if(p.getPlayerId() == client.getPlayerId()){
                                     client.setRoomId(r.getRoomId());
-                                    client.gameController.showGameBoard(roomManager);
+                                    client.gameController.showGameBoard();
                                     client.gameController.updateUI(roomManager);
                                 }
                             }

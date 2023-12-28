@@ -11,7 +11,7 @@ public class Player implements Serializable {
     private String password;
     private int roomId;
 
-    public Player(Socket clientSocket, int id) throws IOException {
+    public Player(int id) throws IOException {
         this.playerId = id;
         this.roomId = -1;
     }
