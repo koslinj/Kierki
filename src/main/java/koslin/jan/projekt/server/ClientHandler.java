@@ -77,6 +77,10 @@ public class ClientHandler extends Thread {
                     .build();
             outputStream.writeObject(res);
             outputStream.flush();
+
+            RoomManager res2 = (RoomManager) roomManager.clone();
+            outputStream.writeObject(res2);
+            outputStream.flush();
         } else {
             Message res = new Message.Builder(DataType.LOGIN)
                     .success(false)

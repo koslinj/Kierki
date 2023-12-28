@@ -3,31 +3,26 @@ package koslin.jan.projekt.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import koslin.jan.projekt.Message;
+import javafx.scene.layout.Pane;
+import koslin.jan.projekt.Room;
+import koslin.jan.projekt.RoomManager;
+import koslin.jan.projekt.server.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameController {
 
-    @FXML
-    private VBox root;
+    public Label player1;
+    public Label player2;
+    public Label player3;
+    public Label player4;
+    public Pane root;
 
     Client client;
-    HashMap<Integer, Label> playersNamesLabels = new HashMap<>();
-
-    public VBox getRoot() {
-        return root;
-    }
-
-    public void addToRoot(Node n){
-        root.getChildren().add(n);
-    }
+    ArrayList<Label> playersNamesLabels = new ArrayList<>();
 
     public void setClient(Client client) {
         this.client = client;
@@ -38,12 +33,53 @@ public class GameController {
         System.out.println("SUPER");
     }
 
-    public void updateUI(Message message) {
-        Platform.runLater(() -> {
-            Label playerNameLabel = new Label(message.getUsername());
+    public void initialize() {
+        playersNamesLabels.add(player1);
+        playersNamesLabels.add(player2);
+        playersNamesLabels.add(player3);
+        playersNamesLabels.add(player4);
+    }
 
-            addToRoot(playerNameLabel);
-            playersNamesLabels.put(message.getPlayerId(), playerNameLabel);
+    public void updateUI(RoomManager roomManager) {
+        Platform.runLater(() -> {
+            Room room = roomManager.getRooms().get(client.getRoomId());
+            ArrayList<Player> players = room.getPlayers();
+
+            int i = 0;
+            for(;i < players.size(); i++){
+                if(players.get(i).getPlayerId() == client.getPlayerId()){
+                    break;
+                }
+            }
+            for(int k = 0;k < players.size(); k++){
+                int index = k-i;
+                if(index < 0) index += 4;
+                playersNamesLabels.get(index).setText(players.get(k).getUsername());
+            }
+        });
+        System.out.println("UPDATEEE");
+    }
+
+    public void showGameBoard(RoomManager roomManager) {
+        Platform.runLater(() -> {
+//            Room room = roomManager.getRooms().get(client.getRoomId());
+//            ArrayList<Player> players = room.getPlayers();
+//
+//            int i = 0;
+//            for(;i < players.size(); i++){
+//                if(players.get(i).getPlayerId() == client.getPlayerId()){
+//                    break;
+//                }
+//            }
+//            for(int k = 0;k < players.size(); k++){
+//                int index = k-i;
+//                if(index < 0) index += 4;
+//                playersNamesLabels.get(index).setText(players.get(k).getUsername());
+//            }
+
+
+            Scene game = new Scene(root);
+            client.primaryStage.setScene(game);
         });
     }
 }

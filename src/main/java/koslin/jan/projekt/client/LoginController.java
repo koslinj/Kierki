@@ -14,24 +14,14 @@ import java.net.Socket;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameInputLogin;
-    @FXML
-    private TextField passwordInputLogin;
-    @FXML
-    private TextField usernameInputRegister;
-    @FXML
-    private TextField passwordInputRegister;
-    @FXML
-    private Label errorLabel;
-    @FXML
-    private VBox root;
+    public TextField usernameInputLogin;
+    public TextField passwordInputLogin;
+    public TextField usernameInputRegister;
+    public TextField passwordInputRegister;
+    public Label errorLabel;
+    public VBox root;
 
     Client client;
-
-    public VBox getRoot() {
-        return root;
-    }
 
     public void setClient(Client client) {
         this.client = client;

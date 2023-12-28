@@ -3,7 +3,9 @@ package koslin.jan.projekt.client;
 import javafx.application.Platform;
 import koslin.jan.projekt.DataType;
 import koslin.jan.projekt.Message;
+import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
+import koslin.jan.projekt.server.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,6 +44,19 @@ public class Receiver implements Runnable {
 //                }
                 } else if (obj instanceof RoomManager roomManager) {
                     client.roomsController.updateUI(roomManager);
+                    if(client.getRoomId() == -1){
+                        for(Room r : roomManager.getRooms().values()){
+                            for(Player p : r.getPlayers()){
+                                if(p.getPlayerId() == client.getPlayerId()){
+                                    client.setRoomId(r.getRoomId());
+                                    client.gameController.showGameBoard(roomManager);
+                                    client.gameController.updateUI(roomManager);
+                                }
+                            }
+                        }
+                    } else {
+                        client.gameController.updateUI(roomManager);
+                    }
                 }
 
             }

@@ -35,7 +35,7 @@ public class Application extends javafx.application.Application {
         });
 
         primaryStage.setTitle("Name Input Form");
-        primaryStage.setScene(new Scene(loginController.getRoot()));
+        primaryStage.setScene(new Scene(loginController.root));
         primaryStage.show();
     }
 

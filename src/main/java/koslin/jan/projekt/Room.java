@@ -3,17 +3,18 @@ package koslin.jan.projekt;
 import koslin.jan.projekt.server.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Room implements Serializable {
     private String roomName;
     private int roomId;
-    private final HashMap<Integer, Player> players;
+    private final ArrayList<Player> players;
 
     public Room(String roomName, int roomId) {
         this.roomName = roomName;
         this.roomId = roomId;
-        this.players = new HashMap<>();
+        this.players = new ArrayList<>();
     }
 
     public String getRoomName() {
@@ -24,11 +25,11 @@ public class Room implements Serializable {
         return roomId;
     }
 
-    public HashMap<Integer, Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public void addPlayer(Player player){
-        players.put(player.getPlayerId(), player);
+        players.add(player);
     }
 }

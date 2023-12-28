@@ -18,12 +18,9 @@ import java.util.HashMap;
 
 public class RoomsController {
 
-    @FXML
-    private Label welcomeLabel;
-    @FXML
-    private VBox root;
-    @FXML
-    private TextField roomNameInput;
+    public Label welcomeLabel;
+    public VBox root;
+    public TextField roomNameInput;
 
     Client client;
     HashMap<Integer, Button> roomsButtons = new HashMap<>();
@@ -32,10 +29,6 @@ public class RoomsController {
     private void handleAddingRoom(ActionEvent event) throws IOException {
         String name = roomNameInput.getText();
         client.addRoom(name);
-    }
-
-    public VBox getRoot() {
-        return root;
     }
 
     public void setWelcomeMessage(String name) {

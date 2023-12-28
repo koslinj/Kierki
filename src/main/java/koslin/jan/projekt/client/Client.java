@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class Client {
     private String playerName;
     private int playerId;
+    private int roomId;
     private Socket server;
     private ObjectOutputStream out;
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
@@ -27,6 +28,8 @@ public class Client {
 
     public Client(Socket server, Stage primaryStage, LoginController loginController, RoomsController roomsController, GameController gameController) throws IOException {
         try {
+            this.playerId = -1;
+            this.roomId = -1;
             this.server = server;
             this.out = new ObjectOutputStream(server.getOutputStream());
             this.primaryStage = primaryStage;
@@ -39,8 +42,20 @@ public class Client {
         }
     }
 
+    public int getPlayerId() {
+        return playerId;
+    }
+
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public void startReceiver() {
@@ -50,7 +65,6 @@ public class Client {
 
     public void login(String username, String password) {
         Message message = new Message.Builder(DataType.LOGIN)
-                .playerId(playerId)
                 .username(username)
                 .password(password)
                 .build();
@@ -65,7 +79,7 @@ public class Client {
 
     public void handleLoginResponse(Message message) {
         if (message.isSuccess()) {
-            Parent root = roomsController.getRoot();
+            Parent root = roomsController.root;
             roomsController.setWelcomeMessage(message.getUsername());
 
             Scene rooms = new Scene(root);
@@ -77,7 +91,6 @@ public class Client {
 
     public void register(String username, String password) {
         Message message = new Message.Builder(DataType.REGISTER)
-                .playerId(playerId)
                 .username(username)
                 .password(password)
                 .build();
@@ -111,11 +124,6 @@ public class Client {
         try {
             out.writeObject(message);
             out.flush();
-
-            Parent root = gameController.getRoot();
-
-            Scene initialGameScene = new Scene(root);
-            primaryStage.setScene(initialGameScene);
         } catch (IOException e) {
             System.out.println("FAILED TO SEND MESSAGE");
             e.printStackTrace();
