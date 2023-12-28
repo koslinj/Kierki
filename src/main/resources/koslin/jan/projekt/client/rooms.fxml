@@ -10,9 +10,9 @@
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="koslin.jan.projekt.client.RoomsController"
       fx:id="root">
     <Label fx:id="welcomeLabel"/>
-    <Label text="Enter name of new message:"/>
+    <Label text="Wprowadź nazwę dla nowego pokoju:"/>
     <TextField fx:id="roomNameInput"/>
-    <Button text="Submit" onAction="#handleAddingRoom"/>
+    <Button text="Zatwierdź" onAction="#handleAddingRoom"/>
     <padding>
         <Insets top="20.0"/>
     </padding>

@@ -6,6 +6,7 @@ import koslin.jan.projekt.Message;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.Player;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -26,30 +27,29 @@ public class Receiver implements Runnable {
             ObjectInputStream in = new ObjectInputStream(server.getInputStream());
             while (server.isConnected()) {
                 Object obj = in.readObject();
-                if (obj instanceof Message message){
+                if (obj instanceof Message message) {
                     if (message.getType() == DataType.QUIT) {
                         break;
                     } else if (message.getType() == DataType.REGISTER) {
                         client.setPlayerId(message.getPlayerId());
                     } else if (message.getType() == DataType.LOGIN) {
-                        Platform.runLater(() -> {
-                            client.handleLoginResponse(message);
-                        });
+                        client.handleLoginResponse(message);
                     }
                 } else if (obj instanceof RoomManager roomManager) {
                     client.roomsController.updateUI(roomManager);
-                    if(client.getRoomId() == -1){
-                        for(Room r : roomManager.getRooms().values()){
-                            for(Player p : r.getPlayers()){
-                                if(p.getPlayerId() == client.getPlayerId()){
+
+                    for (Room r : roomManager.getRooms().values()) {
+                        for (Player p : r.getPlayers()) {
+                            if (p.getPlayerId() == client.getPlayerId()) {
+                                if (client.getRoomId() == -1) {
                                     client.setRoomId(r.getRoomId());
                                     client.gameController.showGameBoard();
-                                    client.gameController.updateUI(roomManager);
+                                    client.gameController.updateUI(r);
+                                } else {
+                                    client.gameController.updateUI(r);
                                 }
                             }
                         }
-                    } else {
-                        client.gameController.updateUI(roomManager);
                     }
                 }
 

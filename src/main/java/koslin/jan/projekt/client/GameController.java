@@ -49,9 +49,9 @@ public class GameController {
         cardsInGameImages.add(card4);
     }
 
-    public void updateUI(RoomManager roomManager) {
+    public void updateUI(Room room) {
         Platform.runLater(() -> {
-            Room room = roomManager.getRooms().get(client.getRoomId());
+//            Room room = roomManager.getRooms().get(client.getRoomId());
             ArrayList<Player> players = room.getPlayers();
 
             int i = 0;
@@ -81,7 +81,7 @@ public class GameController {
                 imageViewWrappers.clear();
 
                 // creating images for cards
-                for (String card : players.get(client.getPlayerId()).getCards()) {
+                for (String card : players.get(i).getCards()) {
 
                     // Load and add 13 images to the HBox
                     Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 90, true, true);

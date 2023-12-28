@@ -3,6 +3,7 @@ package koslin.jan.projekt.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,8 +28,12 @@ public class RoomsController {
         client.addRoom(name);
     }
 
-    public void setWelcomeMessage(String name) {
-        welcomeLabel.setText("Welcome, " + name + "!");
+    public void changeScene(String name) {
+        Platform.runLater(() -> {
+            welcomeLabel.setText("Wiatj, " + name + "!");
+            Scene rooms = new Scene(root);
+            client.primaryStage.setScene(rooms);
+        });
     }
 
     public void setClient(Client client) {

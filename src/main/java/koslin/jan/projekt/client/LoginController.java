@@ -1,5 +1,6 @@
 package koslin.jan.projekt.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -36,7 +37,9 @@ public class LoginController {
     }
 
     public void setErrorLabel(String str) {
-        errorLabel.setText(str);
+        Platform.runLater(() -> {
+            errorLabel.setText(str);
+        });
     }
 }
 

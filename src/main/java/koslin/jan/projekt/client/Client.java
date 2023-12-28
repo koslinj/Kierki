@@ -1,10 +1,12 @@
 package koslin.jan.projekt.client;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import koslin.jan.projekt.DataType;
 import koslin.jan.projekt.Message;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -66,22 +68,12 @@ public class Client {
                 .username(username)
                 .password(password)
                 .build();
-        try {
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println("FAILED TO SEND MESSAGE");
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void handleLoginResponse(Message message) {
         if (message.isSuccess()) {
-            Parent root = roomsController.root;
-            roomsController.setWelcomeMessage(message.getUsername());
-
-            Scene rooms = new Scene(root);
-            primaryStage.setScene(rooms);
+            roomsController.changeScene(message.getUsername());
         } else {
             loginController.setErrorLabel("NIE UDAŁO SIĘ ZALOGOWAĆ");
         }
@@ -92,26 +84,14 @@ public class Client {
                 .username(username)
                 .password(password)
                 .build();
-        try {
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println("FAILED TO SEND MESSAGE");
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void addRoom(String roomName) {
         Message message = new Message.Builder(DataType.ROOM)
                 .roomName(roomName)
                 .build();
-        try {
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println("FAILED TO SEND MESSAGE");
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void joinRoom(int roomId) {
@@ -119,26 +99,14 @@ public class Client {
                 .roomId(roomId)
                 .join(true)
                 .build();
-        try {
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println("FAILED TO SEND MESSAGE");
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void chooseCard(String card) {
         Message message = new Message.Builder(DataType.GAME)
                 .card(card)
                 .build();
-        try {
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println("FAILED TO SEND MESSAGE");
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void quit() {
@@ -152,6 +120,16 @@ public class Client {
             System.out.println("QUIT ENDED");
         } catch (IOException | InterruptedException e) {
             System.out.println("FAILED TO QUIT");
+            e.printStackTrace();
+        }
+    }
+
+    private void sendMessage(Message message) {
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println("FAILED TO SEND MESSAGE");
             e.printStackTrace();
         }
     }
