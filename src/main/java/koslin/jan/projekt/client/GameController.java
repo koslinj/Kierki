@@ -49,9 +49,9 @@ public class GameController {
         cardsInGameImages.add(card4);
     }
 
-    public void updateUI(Room room) {
+    public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
-//            Room room = roomManager.getRooms().get(client.getRoomId());
+            Room room = roomManager.getRooms().get(client.getRoomId());
             ArrayList<Player> players = room.getPlayers();
 
             int i = 0;

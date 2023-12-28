@@ -129,9 +129,14 @@ public class ClientHandler extends Thread {
         room.getCardsInGame().put(player.getPlayerId(), message.getCard());
 
         RoomManager res = (RoomManager) roomManager.clone();
-        for (ObjectOutputStream os : allOutputStreams.values()) {
-            os.writeObject(res);
-            os.flush();
+//ZAMIAST DO WSZYSTKICH MOGE TYLKO DO TYCH Z DANEGO POKOJU
+//        for (ObjectOutputStream os : allOutputStreams.values()) {
+//            os.writeObject(res);
+//            os.flush();
+//        }
+        for(Player p : room.getPlayers()){
+            allOutputStreams.get(p.getPlayerId()).writeObject(res);
+            allOutputStreams.get(p.getPlayerId()).flush();
         }
     }
 }
