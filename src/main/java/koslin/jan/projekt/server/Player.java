@@ -1,9 +1,7 @@
 package koslin.jan.projekt.server;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.Socket;
 import java.util.List;
 
 public class Player implements Serializable {

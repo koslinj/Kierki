@@ -1,7 +1,6 @@
 package koslin.jan.projekt;
 
 import koslin.jan.projekt.server.Player;
-import koslin.jan.projekt.server.Server;
 
 import java.io.Serializable;
 import java.util.ArrayList;

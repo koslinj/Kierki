@@ -1,14 +1,11 @@
 package koslin.jan.projekt.server;
 
-import koslin.jan.projekt.Deck;
 import koslin.jan.projekt.RoomManager;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 
 public class Server {
     public static final int NUMBER_OF_PLAYERS = 4;

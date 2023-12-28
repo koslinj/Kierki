@@ -1,12 +1,10 @@
 package koslin.jan.projekt.client;
 
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import koslin.jan.projekt.DataType;
 import koslin.jan.projekt.Message;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

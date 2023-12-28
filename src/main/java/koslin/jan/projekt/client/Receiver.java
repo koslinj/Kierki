@@ -6,7 +6,6 @@ import koslin.jan.projekt.Message;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.Player;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;

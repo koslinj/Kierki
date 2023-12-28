@@ -1,24 +1,16 @@
 package koslin.jan.projekt.client;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import koslin.jan.projekt.Deck;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.Player;
-
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 

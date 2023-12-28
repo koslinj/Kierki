@@ -4,7 +4,6 @@ import koslin.jan.projekt.DataType;
 import koslin.jan.projekt.Message;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

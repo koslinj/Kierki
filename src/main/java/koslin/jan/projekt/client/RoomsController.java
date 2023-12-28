@@ -3,16 +3,12 @@ package koslin.jan.projekt.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import koslin.jan.projekt.DataType;
-import koslin.jan.projekt.Message;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
-
 import java.io.IOException;
 import java.util.HashMap;
 
