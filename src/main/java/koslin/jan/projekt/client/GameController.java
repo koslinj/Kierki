@@ -72,37 +72,45 @@ public class GameController {
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
                 playersPointsLabels.get(index).setText("PUNKTY: " + players.get(k).getPoints());
 
-                String card = room.getCardsInGame().get(players.get(k).getPlayerId());
-                if(card != null){
-                    Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 110, true, true);
-                    cardsInGameImages.get(index).setImage(image);
-                    cardsInGameImages.get(index).setVisible(true);
-                } else {
-                    cardsInGameImages.get(index).setVisible(false);
-                }
+                displayCardsInGame(room, players, k, index);
             }
 
             if (players.size() == NUMBER_OF_PLAYERS) {
-                // cleaning UI
-                cardsContainer.getChildren().clear();
-
-                // count cards matching with actual color
-                int count = 0;
-                boolean hasActualColor = false;
-                for (String card : myPlayer.getCards()){
-                    if(Deck.colorFromCard(card).equals(room.getActualColor())) count++;
-                }
-                if(count > 0) hasActualColor = true;
-
-                // creating images for cards
-                for (String card : myPlayer.getCards()) {
-                    ImageView imageView = getImageView(card);
-                    HBox imageViewWrapper = getHBox(card, room.getActualColor(), hasActualColor, imageView, myPlayer);
-
-                    cardsContainer.getChildren().add(imageViewWrapper);
-                }
+                displayMyPlayerCards(room, myPlayer);
             }
         });
+    }
+
+    private void displayCardsInGame(Room room, ArrayList<Player> players, int k, int index) {
+        String card = room.getCardsInGame().get(players.get(k).getPlayerId());
+        if(card != null){
+            Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 110, true, true);
+            cardsInGameImages.get(index).setImage(image);
+            cardsInGameImages.get(index).setVisible(true);
+        } else {
+            cardsInGameImages.get(index).setVisible(false);
+        }
+    }
+
+    private void displayMyPlayerCards(Room room, Player myPlayer) {
+        // cleaning UI
+        cardsContainer.getChildren().clear();
+
+        // count cards matching with actual color
+        int count = 0;
+        boolean hasActualColor = false;
+        for (String card : myPlayer.getCards()){
+            if(Deck.colorFromCard(card).equals(room.getActualColor())) count++;
+        }
+        if(count > 0) hasActualColor = true;
+
+        // creating images for cards
+        for (String card : myPlayer.getCards()) {
+            ImageView imageView = getImageView(card);
+            HBox imageViewWrapper = getHBox(card, room.getActualColor(), hasActualColor, imageView, myPlayer);
+
+            cardsContainer.getChildren().add(imageViewWrapper);
+        }
     }
 
     private static int calculatePlace(int i, int k) {

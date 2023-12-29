@@ -20,7 +20,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -20;
@@ -39,7 +39,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -60;
@@ -58,7 +58,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -120;
@@ -77,7 +77,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -90;
@@ -96,7 +96,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = 0;
@@ -115,7 +115,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -150;
@@ -134,7 +134,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = 0;
@@ -153,7 +153,7 @@ public class GameLogicTest {
         int lewaNumber = 1;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = 0;
@@ -172,7 +172,7 @@ public class GameLogicTest {
         int lewaNumber = 7;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -75;
@@ -191,7 +191,7 @@ public class GameLogicTest {
         int lewaNumber = 13;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = -75;
@@ -210,7 +210,7 @@ public class GameLogicTest {
         int lewaNumber = 12;
 
         // Call the method to be tested
-        int actualPoints = ClientHandler.calculatePoints(rule, cardsInGame, lewaNumber);
+        int actualPoints = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
 
         // Perform assertions to verify the correctness of the method
         int expectedPoints = 0;

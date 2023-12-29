@@ -1,5 +1,6 @@
 package koslin.jan.projekt;
 
+import koslin.jan.projekt.server.GameLogic;
 import koslin.jan.projekt.server.Player;
 
 import java.io.Serializable;
@@ -98,6 +99,13 @@ public class Room implements Serializable {
             } else {
                 players.get(i).setTurn(false);
             }
+        }
+    }
+
+    public void addPointsToWinner(Rule rule, int playerId){
+        int points = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
+        for (Player p : players){
+            if(p.getPlayerId() == playerId) p.addPoints(points);
         }
     }
 }

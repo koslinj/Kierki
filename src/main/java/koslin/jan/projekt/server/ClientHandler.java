@@ -132,81 +132,39 @@ public class ClientHandler extends Thread {
     }
 
     private void handleGameMessage(Message message) throws IOException {
-        player.getCards().remove(message.getCard());
         Room room = roomManager.getRooms().get(player.getRoomId());
-        room.nextTurn();
         HashMap<Integer, String> cardsInGame = room.getCardsInGame();
-        cardsInGame.put(player.getPlayerId(), message.getCard());
+
+        makeMove(message, room, cardsInGame);
+
         if(cardsInGame.size() == 1){
             room.setActualColor(Deck.colorFromCard(message.getCard()));
         }
         else if(cardsInGame.size() == NUMBER_OF_PLAYERS){
             int playerId = Deck.getWinnerOfLewa(room.getActualColor(), cardsInGame);
-            System.out.println("WINNNER -> " + playerId);
-            Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
-            int points = calculatePoints(rule, cardsInGame, room.getLewaNumber());
-            for (Player p : room.getPlayers()){
-                if(p.getPlayerId() == playerId) p.addPoints(points);
-            }
 
+            Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
+
+            room.addPointsToWinner(rule, playerId);
             room.setTurnForWinner(playerId);
             room.setActualColor("");
             room.nextLewa();
             cardsInGame.clear();
-
-            RoomManager res = (RoomManager) roomManager.clone();
-
-            for(Player p : room.getPlayers()){
-                allOutputStreams.get(p.getPlayerId()).writeObject(res);
-                allOutputStreams.get(p.getPlayerId()).flush();
-            }
-
-            return;
         }
-        System.out.println("AKTUALNY -> " + room.getActualColor());
+        sendToPlayersInRoom(room);
+    }
 
-
+    private void sendToPlayersInRoom(Room room) throws IOException {
         RoomManager res = (RoomManager) roomManager.clone();
-//ZAMIAST DO WSZYSTKICH MOGE TYLKO DO TYCH Z DANEGO POKOJU
-//        for (ObjectOutputStream os : allOutputStreams.values()) {
-//            os.writeObject(res);
-//            os.flush();
-//        }
         for(Player p : room.getPlayers()){
             allOutputStreams.get(p.getPlayerId()).writeObject(res);
             allOutputStreams.get(p.getPlayerId()).flush();
         }
     }
 
-    public static int calculatePoints(Rule rule, HashMap<Integer, String> cardsInGame, int lewaNumber) {
-        int points = 0;
-        if(rule.isRegardsEveryCard()){
-            if (rule.getColor().equals("")){
-                for (String card : cardsInGame.values()){
-                    for (String type: rule.getType()) {
-                        if(card.contains(type)) points += rule.getPoints();
-                    }
-                }
-            } else {
-                for (String card : cardsInGame.values()) {
-                    if(rule.getType().size() == 0){
-                        if(card.contains(rule.getColor())) points += rule.getPoints();
-                    } else {
-                        for (String type: rule.getType()) {
-                            if(card.contains(type) && card.contains(rule.getColor())) points += rule.getPoints();
-                        }
-                    }
-                }
-            }
-        } else {
-            if(rule.getLewas().size() == 0) points += rule.getPoints();
-            else {
-                for (int lewa : rule.getLewas()){
-                    if(lewa == lewaNumber) points += rule.getPoints();
-                }
-            }
-        }
-
-        return points;
+    private void makeMove(Message message, Room room, HashMap<Integer, String> cardsInGame) {
+        player.getCards().remove(message.getCard());
+        room.nextTurn();
+        cardsInGame.put(player.getPlayerId(), message.getCard());
     }
 }
