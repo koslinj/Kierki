@@ -15,6 +15,8 @@ public class Room implements Serializable {
     private final ArrayList<Player> players;
     private HashMap<Integer, String> cardsInGame;
     private String actualColor;
+    private int roundNumber;
+    private int lewaNumber;
 
     public Room(String roomName, int roomId) {
         this.roomName = roomName;
@@ -22,6 +24,21 @@ public class Room implements Serializable {
         this.players = new ArrayList<>();
         this.cardsInGame = new HashMap<>();
         this.actualColor = "";
+        this.roundNumber = 1;
+        this.lewaNumber = 1;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public int getLewaNumber() {
+        return lewaNumber;
+    }
+
+    public void nextLewa() {
+        lewaNumber++;
+        if(lewaNumber == 14) lewaNumber = 1;
     }
 
     public String getRoomName() {

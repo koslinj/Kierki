@@ -21,6 +21,10 @@ public class GameController {
     public Label player2;
     public Label player3;
     public Label player4;
+    public Label points1;
+    public Label points2;
+    public Label points3;
+    public Label points4;
     public ImageView card1;
     public ImageView card2;
     public ImageView card3;
@@ -31,6 +35,7 @@ public class GameController {
 
     Client client;
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
+    ArrayList<Label> playersPointsLabels = new ArrayList<>();
     ArrayList<ImageView> cardsInGameImages = new ArrayList<>();
 
     public void setClient(Client client) {
@@ -42,6 +47,11 @@ public class GameController {
         playersNamesLabels.add(player2);
         playersNamesLabels.add(player3);
         playersNamesLabels.add(player4);
+
+        playersPointsLabels.add(points1);
+        playersPointsLabels.add(points2);
+        playersPointsLabels.add(points3);
+        playersPointsLabels.add(points4);
 
         cardsInGameImages.add(card1);
         cardsInGameImages.add(card2);
@@ -60,6 +70,7 @@ public class GameController {
             for (int k = 0; k < players.size(); k++) {
                 int index = calculatePlace(i, k);
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
+                playersPointsLabels.get(index).setText("PUNKTY: " + players.get(k).getPoints());
 
                 String card = room.getCardsInGame().get(players.get(k).getPlayerId());
                 if(card != null){

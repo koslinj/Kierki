@@ -11,11 +11,20 @@ public class Player implements Serializable {
     private int roomId;
     private boolean turn;
     private List<String> cards;
+    private int points;
 
     public Player(int id) throws IOException {
         this.playerId = id;
         this.roomId = -1;
         this.turn = false;
+    }
+
+    public void addPoints(int amount) {
+        points += amount;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public int getPlayerId() {

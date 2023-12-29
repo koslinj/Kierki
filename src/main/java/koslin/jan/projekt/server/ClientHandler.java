@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
@@ -143,9 +143,15 @@ public class ClientHandler extends Thread {
         else if(cardsInGame.size() == NUMBER_OF_PLAYERS){
             int playerId = Deck.getWinnerOfLewa(room.getActualColor(), cardsInGame);
             System.out.println("WINNNER -> " + playerId);
+            Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
+            int points = calculatePoints(rule, cardsInGame, room.getLewaNumber());
+            for (Player p : room.getPlayers()){
+                if(p.getPlayerId() == playerId) p.addPoints(points);
+            }
 
             room.setTurnForWinner(playerId);
             room.setActualColor("");
+            room.nextLewa();
             cardsInGame.clear();
 
             RoomManager res = (RoomManager) roomManager.clone();
@@ -170,5 +176,37 @@ public class ClientHandler extends Thread {
             allOutputStreams.get(p.getPlayerId()).writeObject(res);
             allOutputStreams.get(p.getPlayerId()).flush();
         }
+    }
+
+    public static int calculatePoints(Rule rule, HashMap<Integer, String> cardsInGame, int lewaNumber) {
+        int points = 0;
+        if(rule.isRegardsEveryCard()){
+            if (rule.getColor().equals("")){
+                for (String card : cardsInGame.values()){
+                    for (String type: rule.getType()) {
+                        if(card.contains(type)) points += rule.getPoints();
+                    }
+                }
+            } else {
+                for (String card : cardsInGame.values()) {
+                    if(rule.getType().size() == 0){
+                        if(card.contains(rule.getColor())) points += rule.getPoints();
+                    } else {
+                        for (String type: rule.getType()) {
+                            if(card.contains(type) && card.contains(rule.getColor())) points += rule.getPoints();
+                        }
+                    }
+                }
+            }
+        } else {
+            if(rule.getLewas().size() == 0) points += rule.getPoints();
+            else {
+                for (int lewa : rule.getLewas()){
+                    if(lewa == lewaNumber) points += rule.getPoints();
+                }
+            }
+        }
+
+        return points;
     }
 }
