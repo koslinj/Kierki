@@ -1,14 +1,15 @@
 package koslin.jan.projekt.server;
 
-import koslin.jan.projekt.DataType;
-import koslin.jan.projekt.Message;
-import koslin.jan.projekt.Room;
-import koslin.jan.projekt.RoomManager;
+import koslin.jan.projekt.*;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
+
+import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
 public class ClientHandler extends Thread {
     private Player player;
@@ -62,6 +63,13 @@ public class ClientHandler extends Thread {
                 .build();
         outputStream.writeObject(message);
         outputStream.flush();
+
+        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
+        RoomManager res2 = (RoomManager) roomManager.clone();
+        for (ObjectOutputStream os : allOutputStreams.values()) {
+            os.writeObject(res2);
+            os.flush();
+        }
     }
 
     private void handleQuitMessage(Message message) throws IOException {
@@ -126,7 +134,31 @@ public class ClientHandler extends Thread {
     private void handleGameMessage(Message message) throws IOException {
         player.getCards().remove(message.getCard());
         Room room = roomManager.getRooms().get(player.getRoomId());
-        room.getCardsInGame().put(player.getPlayerId(), message.getCard());
+        room.nextTurn();
+        HashMap<Integer, String> cardsInGame = room.getCardsInGame();
+        cardsInGame.put(player.getPlayerId(), message.getCard());
+        if(cardsInGame.size() == 1){
+            room.setActualColor(Deck.colorFromCard(message.getCard()));
+        }
+        else if(cardsInGame.size() == NUMBER_OF_PLAYERS){
+            int playerId = Deck.getWinnerOfLewa(room.getActualColor(), cardsInGame);
+            System.out.println("WINNNER -> " + playerId);
+
+            room.setTurnForWinner(playerId);
+            room.setActualColor("");
+            cardsInGame.clear();
+
+            RoomManager res = (RoomManager) roomManager.clone();
+
+            for(Player p : room.getPlayers()){
+                allOutputStreams.get(p.getPlayerId()).writeObject(res);
+                allOutputStreams.get(p.getPlayerId()).flush();
+            }
+
+            return;
+        }
+        System.out.println("AKTUALNY -> " + room.getActualColor());
+
 
         RoomManager res = (RoomManager) roomManager.clone();
 //ZAMIAST DO WSZYSTKICH MOGE TYLKO DO TYCH Z DANEGO POKOJU

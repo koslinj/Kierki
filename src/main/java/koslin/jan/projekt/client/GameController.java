@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import koslin.jan.projekt.Deck;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.Player;
@@ -54,6 +55,8 @@ public class GameController {
             ArrayList<Player> players = room.getPlayers();
 
             int i = getIndexOfPlayer(players);
+            Player myPlayer = players.get(i);
+
             for (int k = 0; k < players.size(); k++) {
                 int index = calculatePlace(i, k);
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
@@ -62,6 +65,9 @@ public class GameController {
                 if(card != null){
                     Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 110, true, true);
                     cardsInGameImages.get(index).setImage(image);
+                    cardsInGameImages.get(index).setVisible(true);
+                } else {
+                    cardsInGameImages.get(index).setVisible(false);
                 }
             }
 
@@ -69,10 +75,18 @@ public class GameController {
                 // cleaning UI
                 cardsContainer.getChildren().clear();
 
+                // count cards matching with actual color
+                int count = 0;
+                boolean hasActualColor = false;
+                for (String card : myPlayer.getCards()){
+                    if(Deck.colorFromCard(card).equals(room.getActualColor())) count++;
+                }
+                if(count > 0) hasActualColor = true;
+
                 // creating images for cards
-                for (String card : players.get(i).getCards()) {
+                for (String card : myPlayer.getCards()) {
                     ImageView imageView = getImageView(card);
-                    HBox imageViewWrapper = getHBox(card, imageView);
+                    HBox imageViewWrapper = getHBox(card, room.getActualColor(), hasActualColor, imageView, myPlayer);
 
                     cardsContainer.getChildren().add(imageViewWrapper);
                 }
@@ -96,14 +110,33 @@ public class GameController {
         return i;
     }
 
-    private HBox getHBox(String card, ImageView imageView) {
+    private HBox getHBox(String card, String actualColor, boolean hasActualColor, ImageView imageView, Player myPlayer) {
         HBox imageViewWrapper = new HBox();
         imageViewWrapper.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
         imageViewWrapper.getChildren().add(imageView);
-        imageViewWrapper.setOnMouseClicked(event -> {
-            System.out.println(card);
-            client.chooseCard(card);
-        });
+        if(myPlayer.isTurn()){
+            if(hasActualColor){
+                if(Deck.colorFromCard(card).equals(actualColor)){
+                    imageViewWrapper.setOpacity(1.0);
+                    imageViewWrapper.setOnMouseClicked(event -> {
+                        System.out.println(card);
+                        client.chooseCard(card);
+                    });
+                } else {
+                    imageViewWrapper.setOpacity(0.5);
+                }
+            } else {
+                imageViewWrapper.setOpacity(1.0);
+                imageViewWrapper.setOnMouseClicked(event -> {
+                    System.out.println(card);
+                    client.chooseCard(card);
+                });
+            }
+
+        } else {
+            imageViewWrapper.setOpacity(0.5);
+        }
+
         HBox.setMargin(imageViewWrapper, new javafx.geometry.Insets(0, 0, 0, -25));
         return imageViewWrapper;
     }

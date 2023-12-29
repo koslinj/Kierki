@@ -15,6 +15,7 @@ public class Player implements Serializable {
     public Player(int id) throws IOException {
         this.playerId = id;
         this.roomId = -1;
+        this.turn = false;
     }
 
     public int getPlayerId() {

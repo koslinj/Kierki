@@ -1,9 +1,6 @@
 package koslin.jan.projekt;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
@@ -18,11 +15,44 @@ public class Deck {
             "8_of_clubs.png", "8_of_diamonds.png", "8_of_hearts.png", "8_of_spades.png",
             "9_of_clubs.png", "9_of_diamonds.png", "9_of_hearts.png", "9_of_spades.png",
             "10_of_clubs.png", "10_of_diamonds.png", "10_of_hearts.png", "10_of_spades.png",
-            "ace_of_clubs.png", "ace_of_diamonds.png", "ace_of_hearts.png", "ace_of_spades.png",
             "jack_of_clubs.png", "jack_of_diamonds.png", "jack_of_hearts.png", "jack_of_spades.png",
+            "queen_of_clubs.png", "queen_of_diamonds.png", "queen_of_hearts.png", "queen_of_spades.png",
             "king_of_clubs.png", "king_of_diamonds.png", "king_of_hearts.png", "king_of_spades.png",
-            "queen_of_clubs.png", "queen_of_diamonds.png", "queen_of_hearts.png", "queen_of_spades.png"
+            "ace_of_clubs.png", "ace_of_diamonds.png", "ace_of_hearts.png", "ace_of_spades.png"
     );
+
+    public static Integer getWinnerOfLewa(String actualColor, HashMap<Integer, String> cardsInGame){
+        Iterator<Map.Entry<Integer, String>> it = cardsInGame.entrySet().iterator();
+
+        // get first card that matches actual color
+        String max="";
+        int winner=-1;
+        while (it.hasNext()) {
+            Map.Entry<Integer, String> entry = it.next();
+            int key = entry.getKey();
+            String value = entry.getValue();
+
+            if(Deck.colorFromCard(value).equals(actualColor)){
+                max = value;
+                winner = key;
+                break;
+            }
+        }
+
+        // Iterate through the remaining key-value pairs using for-each loop
+        while (it.hasNext()) {
+            Map.Entry<Integer, String> entry = it.next();
+            int key = entry.getKey();
+            String value = entry.getValue();
+
+            if(cards.indexOf(value) > cards.indexOf(max) && Deck.colorFromCard(value).equals(actualColor)){
+                max = value;
+                winner = key;
+            }
+        }
+
+        return winner;
+    }
 
     public static List<List<String>> divideIntoPortions(List<String> list) {
         List<String> copy = new ArrayList<>(list);
@@ -40,5 +70,12 @@ public class Deck {
         }
 
         return portions;
+    }
+
+    public static String colorFromCard(String card){
+        if(card.contains("clubs")) return "clubs";
+        else if(card.contains("diamonds")) return "diamonds";
+        else if(card.contains("hearts")) return "hearts";
+        else return "spades";
     }
 }
