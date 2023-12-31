@@ -18,6 +18,7 @@ public class Room implements Serializable {
     private String actualColor;
     private int roundNumber;
     private int lewaNumber;
+    private int startingPlayerIndex;
 
     public Room(String roomName, int roomId) {
         this.roomName = roomName;
@@ -27,6 +28,7 @@ public class Room implements Serializable {
         this.actualColor = "";
         this.roundNumber = 1;
         this.lewaNumber = 1;
+        this.startingPlayerIndex = 0;
     }
 
     public int getRoundNumber() {
@@ -73,11 +75,25 @@ public class Room implements Serializable {
         players.add(player);
         if(players.size() == NUMBER_OF_PLAYERS){
             List<List<String>> divided = Deck.divideIntoPortions(Deck.cards);
-            players.get(0).setTurn(true);
+            players.get(startingPlayerIndex).setTurn(true);
 
             for(int i = 0;i < NUMBER_OF_PLAYERS; i++){
                 players.get(i).setCards(divided.get(i));
             }
+        }
+    }
+
+    public void nextRound(){
+        roundNumber++;
+        List<List<String>> divided = Deck.divideIntoPortions(Deck.cards);
+        startingPlayerIndex++;
+        if(startingPlayerIndex == 4){
+            startingPlayerIndex = 0;
+        }
+        players.get(startingPlayerIndex).setTurn(true);
+
+        for(int i = 0;i < NUMBER_OF_PLAYERS; i++){
+            players.get(i).setCards(divided.get(i));
         }
     }
 

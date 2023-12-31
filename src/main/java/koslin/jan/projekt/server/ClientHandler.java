@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
@@ -150,6 +151,9 @@ public class ClientHandler extends Thread {
             room.setActualColor("");
             room.nextLewa();
             cardsInGame.clear();
+            if(player.getCards().size() == 0){
+                room.nextRound();
+            }
         }
         sendToPlayersInRoom(room);
     }
