@@ -46,6 +46,10 @@ public class Client {
         return playerId;
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
@@ -77,6 +81,13 @@ public class Client {
         } else {
             loginController.setErrorLabel("NIE UDAŁO SIĘ ZALOGOWAĆ");
         }
+    }
+
+    public void leaveRoom() {
+        roomId = -1;
+        Message message = new Message.Builder(DataType.LEAVE_ROOM)
+                .build();
+        sendMessage(message);
     }
 
     public void register(String username, String password) {

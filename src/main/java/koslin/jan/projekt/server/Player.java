@@ -23,6 +23,10 @@ public class Player implements Serializable {
         points += amount;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public int getPoints() {
         return points;
     }

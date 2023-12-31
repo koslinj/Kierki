@@ -1,6 +1,9 @@
 package koslin.jan.projekt.client;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -32,11 +35,19 @@ public class GameController {
     public Pane root;
     public Label roundInfo;
     public HBox cardsContainer;
+    public Group endingPanel;
+    public Scene game;
 
     Client client;
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
     ArrayList<Label> playersPointsLabels = new ArrayList<>();
     ArrayList<ImageView> cardsInGameImages = new ArrayList<>();
+
+    @FXML
+    private void handleBackToRooms(ActionEvent event) {
+        client.leaveRoom();
+        client.roomsController.changeScene("player" + client.getPlayerId());
+    }
 
     public void setClient(Client client) {
         this.client = client;
@@ -57,11 +68,18 @@ public class GameController {
         cardsInGameImages.add(card2);
         cardsInGameImages.add(card3);
         cardsInGameImages.add(card4);
+
+        game = new Scene(root);
     }
 
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
             Room room = roomManager.getRooms().get(client.getRoomId());
+            if(room.getRoundNumber() == 8){
+                endingPanel.setVisible(true);
+            } else {
+                endingPanel.setVisible(false);
+            }
             roundInfo.setText("RUNDA " + room.getRoundNumber());
 
             ArrayList<Player> players = room.getPlayers();
@@ -171,7 +189,6 @@ public class GameController {
 
     public void showGameBoard() {
         Platform.runLater(() -> {
-            Scene game = new Scene(root);
             client.primaryStage.setScene(game);
         });
     }

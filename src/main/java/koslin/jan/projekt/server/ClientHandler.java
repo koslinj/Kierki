@@ -47,6 +47,8 @@ public class ClientHandler extends Thread {
                     handleRoomMessage(message);
                 } else if (message.getType() == DataType.GAME) {
                     handleGameMessage(message);
+                } else if (message.getType() == DataType.LEAVE_ROOM) {
+                    handleLeaveRoomMessage();
                 }
             }
 
@@ -56,6 +58,19 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
 
+    }
+
+    private void handleLeaveRoomMessage() throws IOException {
+        int roomId = player.getRoomId();
+        Room room = roomManager.getRooms().get(roomId);
+
+        room.removePlayer(player);
+
+        RoomManager res = (RoomManager) roomManager.clone();
+        for (ObjectOutputStream os : allOutputStreams.values()) {
+            os.writeObject(res);
+            os.flush();
+        }
     }
 
     private void sendInitialMessage() throws IOException {

@@ -1,5 +1,5 @@
 package koslin.jan.projekt;
 
 public enum DataType {
-    LOGIN, REGISTER, ROOM, GAME, QUIT
+    LOGIN, REGISTER, ROOM, GAME, QUIT, LEAVE_ROOM
 }

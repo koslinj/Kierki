@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-      prefWidth="650.0" style="-fx-background-color: rgb(0,160,0);" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="koslin.jan.projekt.client.GameController"
-      fx:id="root">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: rgb(0,160,0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="koslin.jan.projekt.client.GameController">
     <children>
-        <Label layoutX="280.0" layoutY="350.0" fx:id="player1" style="-fx-font-size: 16px;"/>
-        <Label layoutX="280.0" layoutY="330.0" fx:id="points1" style="-fx-font-size: 16px;"/>
-        <ImageView layoutX="270.0" layoutY="217.0" fx:id="card1"/>
-        <Label layoutX="10.0" layoutY="220.0" fx:id="player2" style="-fx-font-size: 16px;"/>
-        <Label layoutX="10.0" layoutY="200.0" fx:id="points2" style="-fx-font-size: 16px;"/>
-        <ImageView layoutX="170.0" layoutY="140.0" fx:id="card2"/>
-        <Label layoutX="280.0" layoutY="5.0" fx:id="player3" style="-fx-font-size: 16px;"/>
-        <Label layoutX="280.0" layoutY="25.0" fx:id="points3" style="-fx-font-size: 16px;"/>
-        <ImageView layoutX="270.0" layoutY="71.0" fx:id="card3"/>
-        <Label layoutX="490.0" layoutY="220.0" fx:id="player4" style="-fx-font-size: 16px;"/>
-        <Label layoutX="490.0" layoutY="200.0" fx:id="points4" style="-fx-font-size: 16px;"/>
-        <ImageView layoutX="370.0" layoutY="140.0" fx:id="card4"/>
+        <Label fx:id="player1" layoutX="280.0" layoutY="350.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points1" layoutX="280.0" layoutY="330.0" style="-fx-font-size: 16px;" />
+        <ImageView fx:id="card1" layoutX="270.0" layoutY="217.0" />
+        <Label fx:id="player2" layoutX="10.0" layoutY="220.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points2" layoutX="10.0" layoutY="200.0" style="-fx-font-size: 16px;" />
+        <ImageView fx:id="card2" layoutX="170.0" layoutY="140.0" />
+        <Label fx:id="player3" layoutX="280.0" layoutY="5.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points3" layoutX="280.0" layoutY="25.0" style="-fx-font-size: 16px;" />
+        <ImageView fx:id="card3" layoutX="270.0" layoutY="71.0" />
+        <Label fx:id="player4" layoutX="490.0" layoutY="220.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points4" layoutX="490.0" layoutY="200.0" style="-fx-font-size: 16px;" />
+        <ImageView fx:id="card4" layoutX="370.0" layoutY="140.0" />
 
-        <Label fx:id="roundInfo" style="-fx-font-size: 16px;"/>
-        <HBox layoutX="70.0" layoutY="400" fx:id="cardsContainer"/>
+        <Label fx:id="roundInfo" style="-fx-font-size: 16px;" />
+        <HBox fx:id="cardsContainer" layoutX="70.0" layoutY="400" />
+      <Group fx:id="endingPanel" layoutX="125.0" layoutY="170.0" visible="false">
+         <children>
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="160.0" opacity="0.69" stroke="BLACK" strokeType="INSIDE" width="400.0" />
+            <Label layoutX="59.0" layoutY="14.0" text="Koniec gry, wróc do listy pokoi !">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="149.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleBackToRooms" prefHeight="50.0" prefWidth="100.0" text="WRÓĆ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
     </children>
 </Pane>

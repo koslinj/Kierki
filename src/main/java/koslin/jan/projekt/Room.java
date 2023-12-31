@@ -27,7 +27,7 @@ public class Room implements Serializable {
         this.players = new ArrayList<>();
         this.cardsInGame = new HashMap<>();
         this.actualColor = "";
-        this.roundNumber = 6;
+        this.roundNumber = 7;
         this.lewaNumber = 1;
         this.startingPlayerIndex = 0;
     }
@@ -81,6 +81,22 @@ public class Room implements Serializable {
             for(int i = 0;i < NUMBER_OF_PLAYERS; i++){
                 players.get(i).setCards(divided.get(i));
             }
+        }
+    }
+
+    public void removePlayer(Player player){
+        int toRemove = 0;
+        for (; toRemove<players.size(); toRemove++){
+            if(players.get(toRemove).getPlayerId() == player.getPlayerId()) break;
+        }
+        players.remove(toRemove);
+        player.setPoints(0);
+
+        if(players.size() == 0){
+            this.actualColor = "";
+            this.roundNumber = 1;
+            this.lewaNumber = 1;
+            this.startingPlayerIndex = 0;
         }
     }
 
