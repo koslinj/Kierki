@@ -2,6 +2,7 @@ package koslin.jan.projekt;
 
 import koslin.jan.projekt.server.GameLogic;
 import koslin.jan.projekt.server.Player;
+import koslin.jan.projekt.server.Server;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Room implements Serializable {
         this.players = new ArrayList<>();
         this.cardsInGame = new HashMap<>();
         this.actualColor = "";
-        this.roundNumber = 1;
+        this.roundNumber = 6;
         this.lewaNumber = 1;
         this.startingPlayerIndex = 0;
     }
@@ -90,6 +91,9 @@ public class Room implements Serializable {
         if(startingPlayerIndex == 4){
             startingPlayerIndex = 0;
         }
+        for (Player p : players){
+            p.setTurn(false);
+        }
         players.get(startingPlayerIndex).setTurn(true);
 
         for(int i = 0;i < NUMBER_OF_PLAYERS; i++){
@@ -122,6 +126,15 @@ public class Room implements Serializable {
         int points = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
         for (Player p : players){
             if(p.getPlayerId() == playerId) p.addPoints(points);
+        }
+    }
+
+    public void addPointsToWinnerInRound7(int playerId){
+        for (Rule r : Server.rulesForRounds.values()){
+            int points = GameLogic.calculatePoints(r, cardsInGame, lewaNumber);
+            for (Player p : players){
+                if(p.getPlayerId() == playerId) p.addPoints(points);
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ public class GameController {
     public ImageView card3;
     public ImageView card4;
     public Pane root;
-    public Label gameInfo;
+    public Label roundInfo;
     public HBox cardsContainer;
 
     Client client;
@@ -62,6 +62,8 @@ public class GameController {
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
             Room room = roomManager.getRooms().get(client.getRoomId());
+            roundInfo.setText("RUNDA " + room.getRoundNumber());
+
             ArrayList<Player> players = room.getPlayers();
 
             int i = getIndexOfPlayer(players);

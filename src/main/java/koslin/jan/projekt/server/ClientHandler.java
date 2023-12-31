@@ -144,9 +144,12 @@ public class ClientHandler extends Thread {
         else if(cardsInGame.size() == NUMBER_OF_PLAYERS){
             int playerId = Deck.getWinnerOfLewa(room.getActualColor(), cardsInGame);
 
-            Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
-
-            room.addPointsToWinner(rule, playerId);
+            if(room.getRoundNumber() == 7){
+                room.addPointsToWinnerInRound7(playerId);
+            } else {
+                Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
+                room.addPointsToWinner(rule, playerId);
+            }
             room.setTurnForWinner(playerId);
             room.setActualColor("");
             room.nextLewa();
