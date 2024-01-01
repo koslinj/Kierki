@@ -13,6 +13,7 @@
     <Label text="Wprowadź nazwę dla nowego pokoju:"/>
     <TextField fx:id="roomNameInput"/>
     <Button text="Zatwierdź" onAction="#handleAddingRoom"/>
+    <Label fx:id="infoLabel"/>
     <padding>
         <Insets top="20.0"/>
     </padding>

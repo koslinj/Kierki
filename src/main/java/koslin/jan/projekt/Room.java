@@ -27,13 +27,17 @@ public class Room implements Serializable {
         this.players = new ArrayList<>();
         this.cardsInGame = new HashMap<>();
         this.actualColor = "";
-        this.roundNumber = 7;
+        this.roundNumber = 1;
         this.lewaNumber = 1;
         this.startingPlayerIndex = 0;
     }
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
     }
 
     public int getLewaNumber() {
@@ -70,8 +74,8 @@ public class Room implements Serializable {
     }
 
     public void addPlayer(Player player){
-        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
-        player.setUsername("player" + (players.size()+1));
+//        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
+//        player.setUsername("player" + (players.size()+1));
 
         players.add(player);
         if(players.size() == NUMBER_OF_PLAYERS){

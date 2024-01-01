@@ -33,7 +33,7 @@ public class Application extends javafx.application.Application {
             exitAction(event, client);
         });
 
-        primaryStage.setTitle("Name Input Form");
+        primaryStage.setTitle("Kierki");
         primaryStage.setScene(new Scene(loginController.root));
         primaryStage.show();
     }

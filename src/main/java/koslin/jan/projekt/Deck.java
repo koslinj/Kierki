@@ -58,7 +58,7 @@ public class Deck {
         List<String> copy = new ArrayList<>(list);
         Collections.shuffle(copy);
 
-        int size = 2;
+        int size = cards.size() / NUMBER_OF_PLAYERS;
 
         List<List<String>> portions = new ArrayList<>();
         int index = 0;

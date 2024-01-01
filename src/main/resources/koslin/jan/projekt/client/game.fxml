@@ -9,37 +9,44 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: rgb(0,160,0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="koslin.jan.projekt.client.GameController">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: rgb(0,160,0);"
+      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="koslin.jan.projekt.client.GameController">
     <children>
-        <Label fx:id="player1" layoutX="280.0" layoutY="350.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points1" layoutX="280.0" layoutY="330.0" style="-fx-font-size: 16px;" />
-        <ImageView fx:id="card1" layoutX="270.0" layoutY="217.0" />
-        <Label fx:id="player2" layoutX="10.0" layoutY="220.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points2" layoutX="10.0" layoutY="200.0" style="-fx-font-size: 16px;" />
-        <ImageView fx:id="card2" layoutX="170.0" layoutY="140.0" />
-        <Label fx:id="player3" layoutX="280.0" layoutY="5.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points3" layoutX="280.0" layoutY="25.0" style="-fx-font-size: 16px;" />
-        <ImageView fx:id="card3" layoutX="270.0" layoutY="71.0" />
-        <Label fx:id="player4" layoutX="490.0" layoutY="220.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points4" layoutX="490.0" layoutY="200.0" style="-fx-font-size: 16px;" />
-        <ImageView fx:id="card4" layoutX="370.0" layoutY="140.0" />
+        <Label fx:id="player1" layoutX="280.0" layoutY="350.0" style="-fx-font-size: 16px;"/>
+        <Label fx:id="points1" layoutX="280.0" layoutY="330.0" style="-fx-font-size: 16px;"/>
+        <ImageView fx:id="card1" layoutX="270.0" layoutY="217.0"/>
+        <Label fx:id="player2" layoutX="10.0" layoutY="220.0" style="-fx-font-size: 16px;"/>
+        <Label fx:id="points2" layoutX="10.0" layoutY="200.0" style="-fx-font-size: 16px;"/>
+        <ImageView fx:id="card2" layoutX="170.0" layoutY="140.0"/>
+        <Label fx:id="player3" layoutX="280.0" layoutY="5.0" style="-fx-font-size: 16px;"/>
+        <Label fx:id="points3" layoutX="280.0" layoutY="25.0" style="-fx-font-size: 16px;"/>
+        <ImageView fx:id="card3" layoutX="270.0" layoutY="71.0"/>
+        <Label fx:id="player4" layoutX="490.0" layoutY="220.0" style="-fx-font-size: 16px;"/>
+        <Label fx:id="points4" layoutX="490.0" layoutY="200.0" style="-fx-font-size: 16px;"/>
+        <ImageView fx:id="card4" layoutX="370.0" layoutY="140.0"/>
 
-        <Label fx:id="roundInfo" style="-fx-font-size: 16px;" />
-        <HBox fx:id="cardsContainer" layoutX="70.0" layoutY="400" />
-      <Group fx:id="endingPanel" layoutX="125.0" layoutY="170.0" visible="false">
-         <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="160.0" opacity="0.69" stroke="BLACK" strokeType="INSIDE" width="400.0" />
-            <Label layoutX="59.0" layoutY="14.0" text="Koniec gry, wróc do listy pokoi !">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="149.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleBackToRooms" prefHeight="50.0" prefWidth="100.0" text="WRÓĆ">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-         </children>
-      </Group>
+        <Label fx:id="roundInfo" style="-fx-font-size: 16px;"/>
+        <HBox fx:id="cardsContainer" layoutX="70.0" layoutY="400"/>
+        <Group fx:id="endingPanel" layoutX="125.0" layoutY="170.0" visible="false">
+            <children>
+                <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="160.0" opacity="0.69" stroke="BLACK"
+                           strokeType="INSIDE" width="400.0"/>
+                <Label layoutX="59.0" layoutY="14.0" text="Koniec gry, wróc do listy pokoi !">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Button layoutX="149.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleBackToRooms"
+                        prefHeight="50.0" prefWidth="100.0" text="WRÓĆ">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Button>
+            </children>
+        </Group>
+        <Button layoutX="500.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleBackToRooms" text="WYJDŹ Z POKOJU">
+        </Button>
     </children>
 </Pane>

@@ -64,7 +64,11 @@ public class ClientHandler extends Thread {
         int roomId = player.getRoomId();
         Room room = roomManager.getRooms().get(roomId);
 
+        if(room.getRoundNumber() != 8 && room.getPlayers().size() == NUMBER_OF_PLAYERS){
+            room.setRoundNumber(8);
+        }
         room.removePlayer(player);
+        player.setTurn(false);
 
         RoomManager res = (RoomManager) roomManager.clone();
         for (ObjectOutputStream os : allOutputStreams.values()) {
@@ -80,12 +84,12 @@ public class ClientHandler extends Thread {
         outputStream.writeObject(message);
         outputStream.flush();
 
-        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
-        RoomManager res2 = (RoomManager) roomManager.clone();
-        for (ObjectOutputStream os : allOutputStreams.values()) {
-            os.writeObject(res2);
-            os.flush();
-        }
+//        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
+//        RoomManager res2 = (RoomManager) roomManager.clone();
+//        for (ObjectOutputStream os : allOutputStreams.values()) {
+//            os.writeObject(res2);
+//            os.flush();
+//        }
     }
 
     private void handleQuitMessage(Message message) throws IOException {
@@ -95,17 +99,6 @@ public class ClientHandler extends Thread {
     }
 
     private void handleLoginMessage(Message message) throws IOException {
-        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
-//        Message res = new Message.Builder(DataType.LOGIN)
-//                .success(true)
-//                .username(message.getUsername())
-//                .build();
-//        outputStream.writeObject(res);
-//        outputStream.flush();
-//
-//        RoomManager res2 = (RoomManager) roomManager.clone();
-//        outputStream.writeObject(res2);
-//        outputStream.flush();
         if (message.getUsername().equals(player.getUsername()) && message.getPassword().equals(player.getPassword())) {
             Message res = new Message.Builder(DataType.LOGIN)
                     .success(true)
@@ -135,7 +128,15 @@ public class ClientHandler extends Thread {
         if (message.isJoin()) {
             player.setRoomId(message.getRoomId());
             Room room = roomManager.getRooms().get(message.getRoomId());
-            room.addPlayer(player);
+            if(room.getPlayers().size() == NUMBER_OF_PLAYERS){
+                Message res = new Message.Builder(DataType.ROOM)
+                        .success(false)
+                        .build();
+                outputStream.writeObject(res);
+                outputStream.flush();
+            } else {
+                room.addPlayer(player);
+            }
         } else {
             roomManager.addRoom(message);
         }

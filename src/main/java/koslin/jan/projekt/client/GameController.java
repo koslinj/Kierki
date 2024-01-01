@@ -46,7 +46,21 @@ public class GameController {
     @FXML
     private void handleBackToRooms(ActionEvent event) {
         client.leaveRoom();
-        client.roomsController.changeScene("player" + client.getPlayerId());
+        client.roomsController.changeScene(client.getPlayerName());
+        clearAll();
+    }
+
+    private void clearAll() {
+        for(Label l : playersPointsLabels){
+            l.setText("");
+        }
+        for(Label l : playersNamesLabels){
+            l.setText("");
+        }
+        for(ImageView iv : cardsInGameImages){
+            iv.setVisible(false);
+        }
+        cardsContainer.getChildren().clear();
     }
 
     public void setClient(Client client) {

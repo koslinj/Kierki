@@ -33,6 +33,8 @@ public class Receiver implements Runnable {
                         client.setPlayerId(message.getPlayerId());
                     } else if (message.getType() == DataType.LOGIN) {
                         client.handleLoginResponse(message);
+                    } else if (message.getType() == DataType.ROOM) {
+                        client.handleRoomResponse(message);
                     }
                 } else if (obj instanceof RoomManager roomManager) {
                     client.roomsController.updateUI(roomManager);
@@ -41,6 +43,7 @@ public class Receiver implements Runnable {
                             for(Player p : r.getPlayers()){
                                 if(p.getPlayerId() == client.getPlayerId()){
                                     client.setRoomId(r.getRoomId());
+                                    client.roomsController.setInfoLabelText("");
                                     client.gameController.showGameBoard();
                                     client.gameController.updateUI(roomManager);
                                 }

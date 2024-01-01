@@ -77,6 +77,7 @@ public class Client {
 
     public void handleLoginResponse(Message message) {
         if (message.isSuccess()) {
+            playerName = message.getUsername();
             roomsController.changeScene(message.getUsername());
         } else {
             loginController.setErrorLabel("NIE UDAŁO SIĘ ZALOGOWAĆ");
@@ -145,4 +146,9 @@ public class Client {
         }
     }
 
+    public void handleRoomResponse(Message message) {
+        if (!message.isSuccess()){
+            roomsController.setInfoLabelText("Nie możesz dolączyć do pełnego pokoju");
+        }
+    }
 }

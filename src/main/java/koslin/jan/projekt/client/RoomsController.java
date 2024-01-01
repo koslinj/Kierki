@@ -18,9 +18,15 @@ public class RoomsController {
     public Label welcomeLabel;
     public VBox root;
     public TextField roomNameInput;
+    public Label infoLabel;
+    Scene rooms;
 
     Client client;
     HashMap<Integer, Button> roomsButtons = new HashMap<>();
+
+    public void initialize(){
+        rooms = new Scene(root);
+    }
 
     @FXML
     private void handleAddingRoom(ActionEvent event) throws IOException {
@@ -31,7 +37,6 @@ public class RoomsController {
     public void changeScene(String name) {
         Platform.runLater(() -> {
             welcomeLabel.setText("Wiatj, " + name + "!");
-            Scene rooms = new Scene(root);
             client.primaryStage.setScene(rooms);
         });
     }
@@ -57,6 +62,12 @@ public class RoomsController {
                 root.getChildren().add(roomButton);
                 roomsButtons.put(r.getRoomId(), roomButton);
             }
+        });
+    }
+
+    public void setInfoLabelText(String s) {
+        Platform.runLater(() -> {
+            infoLabel.setText(s);
         });
     }
 }
