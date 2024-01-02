@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import koslin.jan.projekt.ConfigReader;
 
 import java.net.Socket;
 
@@ -24,7 +25,10 @@ public class Application extends javafx.application.Application {
         gameLoader.load();
         GameController gameController = gameLoader.getController();
 
-        client = new Client(new Socket("127.0.0.1", 6000), primaryStage,loginController, roomsController, gameController);
+        int port = ConfigReader.getPort();
+        String ip = ConfigReader.getIp();
+
+        client = new Client(new Socket(ip, port), primaryStage,loginController, roomsController, gameController);
         client.startReceiver();
         setClientInControllers(loginController, roomsController, gameController);
 

@@ -1,15 +1,18 @@
 package koslin.jan.projekt.server;
 
-import koslin.jan.projekt.Deck;
-import koslin.jan.projekt.Room;
-import koslin.jan.projekt.RoomManager;
-import koslin.jan.projekt.Rule;
+import koslin.jan.projekt.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class Server {
     public static final int NUMBER_OF_PLAYERS = 4;
@@ -50,8 +53,11 @@ public class Server {
 //        roomManager.getRooms().put(room.getRoomId(), room);
         try {
             Server server = new Server();
-            server.start(6000, roomManager);
-        } catch (IOException e) {
+            int port = ConfigReader.getPort();
+            String ip = ConfigReader.getIp();
+            System.out.println("Server starting on port: " + port +" and IP: " + ip);
+            server.start(port, roomManager);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
     }
