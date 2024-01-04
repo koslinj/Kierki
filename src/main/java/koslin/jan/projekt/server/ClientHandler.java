@@ -54,7 +54,7 @@ public class ClientHandler extends Thread {
 
             in.close();
             clientSocket.close();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -148,7 +148,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void handleGameMessage(Message message) throws IOException {
+    private void handleGameMessage(Message message) throws IOException, InterruptedException {
         Room room = roomManager.getRooms().get(player.getRoomId());
         HashMap<Integer, String> cardsInGame = room.getCardsInGame();
 
@@ -166,15 +166,28 @@ public class ClientHandler extends Thread {
                 Rule rule = Server.rulesForRounds.get(room.getRoundNumber());
                 room.addPointsToWinner(rule, playerId);
             }
-            room.setTurnForWinner(playerId);
-            room.setActualColor("");
-            room.nextLewa();
-            cardsInGame.clear();
+            // wyświetlenie graczom wszystkich kart i odczekanie 1s przed wyczyszczeniem stołu
+            displayAndWait(room);
+            //wyczyszczenie stołu
+            clearAndGoToNextLewa(room, cardsInGame, playerId);
             if(player.getCards().size() == 0){
                 room.nextRound();
             }
         }
         sendToPlayersInRoom(room);
+    }
+
+    private void clearAndGoToNextLewa(Room room, HashMap<Integer, String> cardsInGame, int playerId) {
+        cardsInGame.clear();
+        room.setTurnForWinner(playerId);
+        room.setActualColor("");
+        room.nextLewa();
+    }
+
+    private void displayAndWait(Room room) throws IOException, InterruptedException {
+        room.setTurnFalseForEveryone();
+        sendToPlayersInRoom(room);
+        sleep(1000);
     }
 
     private void sendToPlayersInRoom(Room room) throws IOException {

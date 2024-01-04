@@ -132,6 +132,12 @@ public class Room implements Serializable {
         players.get(i).setTurn(true);
     }
 
+    public void setTurnFalseForEveryone(){
+        for (int i=0; i<NUMBER_OF_PLAYERS; i++){
+            players.get(i).setTurn(false);
+        }
+    }
+
     public void setTurnForWinner(int playerId){
         for (int i = 0; i<NUMBER_OF_PLAYERS; i++){
             if (players.get(i).getPlayerId() == playerId){
