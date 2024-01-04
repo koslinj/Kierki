@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Polygon;
 import koslin.jan.projekt.Deck;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
@@ -32,6 +33,10 @@ public class GameController {
     public ImageView card2;
     public ImageView card3;
     public ImageView card4;
+    public Polygon triangle1;
+    public Polygon triangle2;
+    public Polygon triangle3;
+    public Polygon triangle4;
     public Pane root;
     public Label roundInfo;
     public HBox cardsContainer;
@@ -42,6 +47,7 @@ public class GameController {
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
     ArrayList<Label> playersPointsLabels = new ArrayList<>();
     ArrayList<ImageView> cardsInGameImages = new ArrayList<>();
+    ArrayList<Polygon> triangles = new ArrayList<>();
 
     @FXML
     private void handleBackToRooms(ActionEvent event) {
@@ -83,6 +89,11 @@ public class GameController {
         cardsInGameImages.add(card3);
         cardsInGameImages.add(card4);
 
+        triangles.add(triangle1);
+        triangles.add(triangle2);
+        triangles.add(triangle3);
+        triangles.add(triangle4);
+
         game = new Scene(root);
     }
 
@@ -105,6 +116,7 @@ public class GameController {
                 int index = calculatePlace(i, k);
                 playersNamesLabels.get(index).setText(players.get(k).getUsername());
                 playersPointsLabels.get(index).setText("PUNKTY: " + players.get(k).getPoints());
+                triangles.get(index).setVisible(players.get(k).isTurn());
 
                 displayCardsInGame(room, players, k, index);
             }
