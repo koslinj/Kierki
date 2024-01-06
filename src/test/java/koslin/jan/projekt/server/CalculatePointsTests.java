@@ -2,11 +2,11 @@ package koslin.jan.projekt.server;
 
 import koslin.jan.projekt.Rule;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GameLogicTest {
+public class CalculatePointsTests {
 
     @Test
     public void testCalculatePointsRound1() {

@@ -1,5 +1,6 @@
 package koslin.jan.projekt.server;
 
+import koslin.jan.projekt.Deck;
 import koslin.jan.projekt.Rule;
 
 import java.util.HashMap;
@@ -35,5 +36,10 @@ public class GameLogic {
         }
 
         return points;
+    }
+
+    public static boolean isValidColor(String card, boolean hideHearts, String actualColor, boolean hasActualColor) {
+        String cardColor = Deck.colorFromCard(card);
+        return (!hasActualColor || cardColor.equals(actualColor)) && !(hideHearts && cardColor.equals("hearts"));
     }
 }
