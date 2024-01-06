@@ -21,16 +21,15 @@ public class Server {
     private HashMap<Integer, ObjectOutputStream> allOutputStreams = new HashMap<>();
 
     public void start(int port, RoomManager roomManager) throws IOException {
+        Website website = new Website(roomManager);
+        website.startWebsite();
+
         serverSocket = new ServerSocket(port);
         int clientId = 0;
         while (true) {
             Socket client = serverSocket.accept();
             ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
             Player player = new Player(clientId);
-//            // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
-//            player.setRoomId(1);
-//            Room room = roomManager.getRooms().get(1);
-//            room.addPlayer(player);
 
             allOutputStreams.put(clientId, outputStream);
 
@@ -42,8 +41,6 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         RoomManager roomManager = new RoomManager();
-//        Room room = new Room("POKOJ", 1);
-//        roomManager.getRooms().put(room.getRoomId(), room);
         try {
             Server server = new Server();
             int port = ConfigReader.getPort();

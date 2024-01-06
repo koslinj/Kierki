@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stan Serwera</title>
+</head>
+<body>
+<h1>Stan Serwera</h1>
+<div id="roomInfo"></div>
+
+<script>
+    // Fetch data from the server
+    function fetchData() {
+        fetch('/api')
+            .then(response => response.json())
+            .then(data => updateStatus(data.rooms))
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Update the content on the website
+    // Function to display room information
+    function updateStatus(rooms) {
+        const roomInfoElement = document.getElementById('roomInfo');
+
+        // Clearing
+        roomInfoElement.innerHTML = '';
+
+        // Iterate over rooms
+        rooms.forEach(room => {
+            // Create a div for each room
+            const roomDiv = document.createElement('div');
+            roomDiv.innerHTML = `
+                <h2>Room Information</h2>
+                <p><strong>Room Name:</strong> ${room.roomName}</p>
+                <p><strong>Room ID:</strong> ${room.roomId}</p>
+                <p><strong>Round Number:</strong> ${room.roundNumber}</p>
+                <p><strong>Lewa Number:</strong> ${room.lewaNumber}</p>
+
+                <h3>Players:</h3>
+                <ul>
+                    ${room.players.map(player => `
+                        <li>
+                            <strong>Player ID:</strong> ${player.playerId},
+                            <strong>Username:</strong> ${player.username},
+                            <strong>Points:</strong> ${player.points}
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            // Append the roomDiv to roomInfoElement
+            roomInfoElement.appendChild(roomDiv);
+        });
+    }
+
+    fetchData();
+    setInterval(fetchData, 1000);
+</script>
+</body>
+</html>
