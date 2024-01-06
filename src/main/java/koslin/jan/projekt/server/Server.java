@@ -15,15 +15,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class Server {
-    public static final int NUMBER_OF_PLAYERS = 4;
-    public static Map<Integer, Rule> rulesForRounds = Map.of(
-            1, new Rule(-20, new ArrayList<>()),
-            2, new Rule(-20, "hearts", new ArrayList<>()),
-            3, new Rule(-60, "", List.of("queen")),
-            4, new Rule(-30, "", Arrays.asList("jack", "king")),
-            5, new Rule(-150, "hearts", List.of("king")),
-            6, new Rule(-75, Arrays.asList(7, 13))
-    );
+    public static int NUMBER_OF_PLAYERS = ConfigReader.getNumberOfPlayers();
+    public static Map<Integer, Rule> rulesForRounds = ConfigReader.getRules();
     private ServerSocket serverSocket;
     private HashMap<Integer, ObjectOutputStream> allOutputStreams = new HashMap<>();
 

@@ -41,7 +41,15 @@ public class Rule {
         return regardsEveryCard;
     }
 
+    public void setRegardsEveryCard(boolean regardsEveryCard) {
+        this.regardsEveryCard = regardsEveryCard;
+    }
+
     public List<Integer> getLewas() {
         return lewas;
+    }
+
+    public void setLewas(List<Integer> lewas) {
+        this.lewas = lewas;
     }
 }
