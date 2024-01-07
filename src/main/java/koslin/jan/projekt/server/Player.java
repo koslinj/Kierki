@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The {@code Player} class represents a player in the game.
+ * Players have unique identifiers, usernames, passwords, associated room IDs, and game-related information.
+ */
 public class Player implements Serializable {
     private final int playerId;
     private String username;
@@ -13,6 +17,12 @@ public class Player implements Serializable {
     private List<String> cards;
     private int points;
 
+    /**
+     * Constructs a new {@code Player} instance with the given player ID.
+     *
+     * @param id The unique identifier for the player.
+     * @throws IOException If an I/O error occurs.
+     */
     public Player(int id) throws IOException {
         this.playerId = id;
         this.roomId = -1;

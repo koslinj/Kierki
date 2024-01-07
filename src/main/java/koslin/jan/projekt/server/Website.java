@@ -11,15 +11,32 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The {@code Website} class represents the embedded HTTP server for the card game application.
+ * It provides a simple web interface for monitoring the application status and interacting with the game rooms.
+ */
 public class Website {
     private RoomManager roomManager;
+    private int websitePort;
 
-    public Website(RoomManager roomManager) {
+    /**
+     * Initializes a new instance of the {@code Website} class with the specified parameters.
+     *
+     * @param websitePort  The port number for the embedded website.
+     * @param roomManager  The room manager managing game rooms.
+     */
+    public Website(int websitePort, RoomManager roomManager) {
+        this.websitePort = websitePort;
         this.roomManager = roomManager;
     }
 
+    /**
+     * Starts the embedded HTTP server for the website.
+     *
+     * @throws IOException  If an I/O error occurs while starting the server.
+     */
     public void startWebsite() throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(websitePort), 0);
 
         // Create a context for the root endpoint ("/")
         server.createContext("/", new RootHandler());
@@ -32,6 +49,10 @@ public class Website {
         System.out.println("Server started on port 8080");
     }
 
+    /**
+     * The {@code RootHandler} class represents the HTTP handler for the root ("/") endpoint.
+     * It serves the HTML content to the clients accessing the root endpoint.
+     */
     class RootHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -57,7 +78,10 @@ public class Website {
         }
     }
 
-    // Handler for the "/api" endpoint
+    /**
+     * The {@code AppStatusHandler} class represents the HTTP handler for the "/api" endpoint.
+     * It serves the application status in JSON format to clients accessing the "/api" endpoint.
+     */
     class AppStatusHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {

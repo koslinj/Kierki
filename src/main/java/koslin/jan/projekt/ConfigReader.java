@@ -22,16 +22,28 @@ import java.util.Map;
 public class ConfigReader {
 
     /**
-     * Gets port number from config file
-     * @return port number
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * Gets port number for Socket server from config file
+     * @return Socket server port number
      */
-    public static int getPort() throws ParserConfigurationException, IOException, SAXException {
+    public static int getPort() {
         String str = null;
         try {
             str = getConfigValue("port");
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            System.out.println("Failed to load data from config.xml");
+            System.exit(1);
+        }
+        return Integer.parseInt(str);
+    }
+
+    /**
+     * Gets port number for website from config file
+     * @return Website port number
+     */
+    public static int getWebsitePort() {
+        String str = null;
+        try {
+            str = getConfigValue("website_port");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             System.out.println("Failed to load data from config.xml");
             System.exit(1);

@@ -1,6 +1,7 @@
 <config>
     <server>
         <port>6000</port>
+        <website_port>8080</website_port>
         <ip>127.0.0.1</ip>
         <number_of_players>4</number_of_players>
     </server>
