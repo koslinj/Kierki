@@ -10,16 +10,31 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+/**
+ * A Runnable class responsible for receiving messages from the server and updating the client accordingly.
+ * It is connected with specific client and allow to listen for messages from server in the background.
+ * After reading a message it assigns tasks to the specific controller in associated {@link Client}
+ */
 public class Receiver implements Runnable {
 
     Client client;
     Socket server;
 
+    /**
+     * Constructs a Receiver instance.
+     *
+     * @param client The client associated with this receiver.
+     * @param server The socket connected to the server for receiving messages.
+     */
     public Receiver(Client client, Socket server) {
         this.server = server;
         this.client = client;
     }
 
+    /**
+     * Continuously listens for incoming messages from the server and updates the client accordingly.
+     * The thread terminates when a QUIT message is received or an exception occurs.
+     */
     @Override
     public void run() {
         try {

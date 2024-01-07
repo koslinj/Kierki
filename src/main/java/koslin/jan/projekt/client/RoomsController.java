@@ -13,6 +13,9 @@ import koslin.jan.projekt.RoomManager;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Controller class for the rooms view, handling UI interactions and updating room information.
+ */
 public class RoomsController {
 
     public Label welcomeLabel;
@@ -24,16 +27,30 @@ public class RoomsController {
     Client client;
     HashMap<Integer, Button> roomsButtons = new HashMap<>();
 
+    /**
+     * Initializes the RoomsController, creating the scene for the rooms view.
+     */
     public void initialize(){
         rooms = new Scene(root);
     }
 
+    /**
+     * Handles the event of adding a room when the corresponding button is clicked.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If an IO exception occurs during room addition.
+     */
     @FXML
     private void handleAddingRoom(ActionEvent event) throws IOException {
         String name = roomNameInput.getText();
         client.addRoom(name);
     }
 
+    /**
+     * Changes the scene to the rooms view, displaying the welcome label with the player's name.
+     *
+     * @param name The name of the player to be displayed in the welcome label.
+     */
     public void changeScene(String name) {
         Platform.runLater(() -> {
             welcomeLabel.setText("Wiatj, " + name + "!");
@@ -45,6 +62,11 @@ public class RoomsController {
         this.client = client;
     }
 
+    /**
+     * Updates the UI with the latest room information from the RoomManager.
+     *
+     * @param roomManager The RoomManager containing the latest room information.
+     */
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
             // cleaning UI
@@ -65,9 +87,15 @@ public class RoomsController {
         });
     }
 
-    public void setInfoLabelText(String s) {
+    /**
+     * Sets the information label's text on the UI.
+     * For example when the room is full and player is unable to join.
+     *
+     * @param information The text to be set on the information label.
+     */
+    public void setInfoLabelText(String information) {
         Platform.runLater(() -> {
-            infoLabel.setText(s);
+            infoLabel.setText(information);
         });
     }
 }

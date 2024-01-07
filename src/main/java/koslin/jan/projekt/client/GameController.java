@@ -17,10 +17,20 @@ import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.GameLogic;
 import koslin.jan.projekt.server.Player;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
+/**
+ * The GameController class manages the graphical user interface (GUI) for the game view.
+ * It displays information about the current round, players, and cards in the game.
+ * The class also handles user interactions, such as choosing cards and navigating back to the rooms view.
+ *
+ * <p>The GameController class works in conjunction with the Client class to update the GUI based on server responses.
+ * It utilizes JavaFX components like labels, images, and polygons to represent player information and cards on the screen.</p>
+ *
+ */
 public class GameController {
 
     public Label player1;
@@ -75,30 +85,24 @@ public class GameController {
         this.client = client;
     }
 
+    /**
+     * Initializes the GameController, setting up JavaFX components and data structures.
+     * Important in order to handle GUI changes after in game actions
+     */
     public void initialize() {
-        playersNamesLabels.add(player1);
-        playersNamesLabels.add(player2);
-        playersNamesLabels.add(player3);
-        playersNamesLabels.add(player4);
-
-        playersPointsLabels.add(points1);
-        playersPointsLabels.add(points2);
-        playersPointsLabels.add(points3);
-        playersPointsLabels.add(points4);
-
-        cardsInGameImages.add(card1);
-        cardsInGameImages.add(card2);
-        cardsInGameImages.add(card3);
-        cardsInGameImages.add(card4);
-
-        triangles.add(triangle1);
-        triangles.add(triangle2);
-        triangles.add(triangle3);
-        triangles.add(triangle4);
+        playersNamesLabels.addAll(Arrays.asList(player1, player2, player3, player4));
+        playersPointsLabels.addAll(Arrays.asList(points1, points2, points3, points4));
+        cardsInGameImages.addAll(Arrays.asList(card1, card2, card3, card4));
+        triangles.addAll(Arrays.asList(triangle1, triangle2, triangle3, triangle4));
 
         game = new Scene(root);
     }
 
+    /**
+     * Updates the whole game UI based on the provided RoomManager.
+     *
+     * @param roomManager The RoomManager containing information about rooms and players.
+     */
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
             Room room = roomManager.getRooms().get(client.getRoomId());
@@ -129,6 +133,14 @@ public class GameController {
         });
     }
 
+    /**
+     * Displays the cards in the game for a specific player.
+     *
+     * @param room    The current room.
+     * @param players The list of players.
+     * @param k       The index of the player in the list.
+     * @param index   The index of place to display the cards for.
+     */
     private void displayCardsInGame(Room room, ArrayList<Player> players, int k, int index) {
         String card = room.getCardsInGame().get(players.get(k).getPlayerId());
         if(card != null){
@@ -140,6 +152,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Displays the cards that the current player has.
+     *
+     * @param room     The current room.
+     * @param myPlayer The current player.
+     */
     private void displayMyPlayerCards(Room room, Player myPlayer) {
         // cleaning UI
         cardsContainer.getChildren().clear();
@@ -162,12 +180,25 @@ public class GameController {
         }
     }
 
+    /**
+     * Calculates the position to display a player's information based on the current player.
+     *
+     * @param i The index of the current player.
+     * @param k The index of the player to calculate the position for.
+     * @return The calculated index for displaying the player's information.
+     */
     private static int calculatePlace(int i, int k) {
         int index = k - i;
         if (index < 0) index += NUMBER_OF_PLAYERS;
         return index;
     }
 
+    /**
+     * Retrieves the index of the current player in the list of players.
+     *
+     * @param players The list of players.
+     * @return The index of the current player.
+     */
     private int getIndexOfPlayer(ArrayList<Player> players) {
         int i = 0;
         for (; i < players.size(); i++) {
@@ -178,6 +209,15 @@ public class GameController {
         return i;
     }
 
+    /**
+     * Creates and configures an HBox containing an ImageView for a card.
+     *
+     * @param card       The card name.
+     * @param imageView  The ImageView for the card.
+     * @param myPlayer   The player associated with the card.
+     * @param validColor Indicates if the card has a valid color.
+     * @return The configured HBox containing the ImageView.
+     */
     private HBox getHBox(String card, ImageView imageView, Player myPlayer, boolean validColor) {
         HBox imageViewWrapper = new HBox();
         imageViewWrapper.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-border-radius: 5");
@@ -201,6 +241,13 @@ public class GameController {
         return imageViewWrapper;
     }
 
+    /**
+     * Creates an ImageView for a card with the specified name.
+     * Loads image of specified card from the resources.
+     *
+     * @param card The name of the card.
+     * @return The configured ImageView for the card.
+     */
     private ImageView getImageView(String card) {
         Image image = new Image(getClass().getResource("cards/" + card).toString(), 80, 90, true, true);
         ImageView imageView = new ImageView(image);
@@ -208,6 +255,9 @@ public class GameController {
         return imageView;
     }
 
+    /**
+     * Shows the game board scene in the primary stage.
+     */
     public void showGameBoard() {
         Platform.runLater(() -> {
             client.primaryStage.setScene(game);

@@ -7,6 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller class for the login view, handling user interactions connected with register and login.
+ */
 public class LoginController {
 
     public TextField usernameInputLogin;
@@ -22,6 +25,11 @@ public class LoginController {
         this.client = client;
     }
 
+    /**
+     * Handles the login form submission event.
+     *
+     * @param event The ActionEvent triggered by the login form submission.
+     */
     @FXML
     private void handleSubmitLogin(ActionEvent event) {
         String username = usernameInputLogin.getText();
@@ -29,6 +37,11 @@ public class LoginController {
         client.login(username, password);
     }
 
+    /**
+     * Handles the register form submission event.
+     *
+     * @param event The ActionEvent triggered by the register form submission.
+     */
     @FXML
     private void handleSubmitRegister(ActionEvent event) {
         String username = usernameInputRegister.getText();
@@ -36,9 +49,14 @@ public class LoginController {
         client.register(username, password);
     }
 
-    public void setErrorLabel(String str) {
+    /**
+     * Sets an error message to be displayed in the error label.
+     *
+     * @param errorMessage The error message to be displayed.
+     */
+    public void setErrorLabel(String errorMessage) {
         Platform.runLater(() -> {
-            errorLabel.setText(str);
+            errorLabel.setText(errorMessage);
         });
     }
 }
