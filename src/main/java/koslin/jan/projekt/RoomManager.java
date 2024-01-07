@@ -17,12 +17,14 @@ public class RoomManager implements Serializable {
         return rooms;
     }
 
-    public synchronized Room addRoom(Message message) {
+    /**
+     * This method handles creating Room and putting it in HashMap
+     * @param message Message received from the client that contains roomName
+     */
+    public synchronized void addRoom(Message message) {
         Room room = new Room(message.getRoomName(), roomCounter);
         rooms.put(roomCounter, room);
-        //message.setRoomId(roomCounter);
         roomCounter++;
-        return room;
     }
 
     @Override
