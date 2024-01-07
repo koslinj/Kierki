@@ -3,6 +3,7 @@ package koslin.jan.projekt.server;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 
 import java.io.IOException;
@@ -42,6 +43,8 @@ public class Website {
         server.createContext("/", new RootHandler());
         // Create a context for the "/api" endpoint
         server.createContext("/api", new AppStatusHandler());
+        // Define the endpoint to skip a round in a specific room
+        server.createContext("/skipRound", new SkipRoundHandler());
 
         // Start the server
         server.setExecutor(null);
@@ -98,6 +101,37 @@ public class Website {
         // Convert RoomManager object to JSON (you need to implement this method)
         private String convertRoomManagerToJson(RoomManager roomManager) {
             return JsonConverter.convertRoomManagerToJson(roomManager);
+        }
+    }
+
+    class SkipRoundHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            // Extract room ID from the request URI
+            String path = exchange.getRequestURI().getPath();
+            String[] pathSegments = path.split("/");
+            int roomId = Integer.parseInt(pathSegments[pathSegments.length - 1]);
+
+            // Call the method to skip the round in the specified room
+            skipRound(roomId);
+
+            // Respond with a success message
+            String response = "Round skipped successfully";
+            exchange.sendResponseHeaders(200, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }
+
+        private void skipRound(int roomId) throws IOException {
+            // Implement the logic to skip the round in the specified room
+            // This method should handle the logic to skip the round
+            Room room = roomManager.getRooms().get(roomId);
+            if (room != null) {
+                room.skipRound();
+
+                System.out.println("Round skipped in room: " + roomId);
+            }
         }
     }
 

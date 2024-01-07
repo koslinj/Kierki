@@ -22,7 +22,7 @@ public class ClientHandler extends Thread {
     private final Socket clientSocket;
     private final ObjectOutputStream outputStream;
     private ObjectInputStream in;
-    private RoomManager roomManager;
+    private static RoomManager roomManager;
     private HashMap<Integer, ObjectOutputStream> allOutputStreams;
 
     /**
@@ -39,7 +39,7 @@ public class ClientHandler extends Thread {
         this.player = player;
         this.clientSocket = clientSocket;
         this.outputStream = outputStream;
-        this.roomManager = roomManager;
+        ClientHandler.roomManager = roomManager;
         this.allOutputStreams = allOutputStreams;
     }
 
@@ -265,11 +265,11 @@ public class ClientHandler extends Thread {
      * @param room The current room.
      * @throws IOException If an I/O error occurs.
      */
-    private void sendToPlayersInRoom(Room room) throws IOException {
+    public static void sendToPlayersInRoom(Room room) throws IOException {
         for(Player p : room.getPlayers()){
-            allOutputStreams.get(p.getPlayerId()).reset();
-            allOutputStreams.get(p.getPlayerId()).writeObject(roomManager);
-            allOutputStreams.get(p.getPlayerId()).flush();
+            Server.allOutputStreams.get(p.getPlayerId()).reset();
+            Server.allOutputStreams.get(p.getPlayerId()).writeObject(roomManager);
+            Server.allOutputStreams.get(p.getPlayerId()).flush();
         }
     }
 

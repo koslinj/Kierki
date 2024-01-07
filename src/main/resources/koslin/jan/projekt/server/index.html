@@ -49,9 +49,32 @@
                 </ul>
             `;
 
+            // Create "Skip Round" button
+            const skipRoundButton = document.createElement('button');
+            skipRoundButton.textContent = 'Skip Round';
+            skipRoundButton.onclick = () => skipRound(room.roomId);
+
+            // Append the button to roomDiv
+            roomDiv.appendChild(skipRoundButton);
+
             // Append the roomDiv to roomInfoElement
             roomInfoElement.appendChild(roomDiv);
         });
+    }
+
+    // Function to skip round in a specific room
+    function skipRound(roomId) {
+        // Perform API call to skip round in the specified room
+        fetch(`/skipRound/${roomId}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    // If the API call is successful, fetch and display updated room data
+                    fetchData();
+                } else {
+                    console.error('Error skipping round:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error skipping round:', error));
     }
 
     fetchData();

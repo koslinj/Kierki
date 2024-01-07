@@ -1,13 +1,16 @@
 package koslin.jan.projekt;
 
+import koslin.jan.projekt.server.ClientHandler;
 import koslin.jan.projekt.server.GameLogic;
 import koslin.jan.projekt.server.Player;
 import koslin.jan.projekt.server.Server;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
@@ -207,5 +210,48 @@ public class Room implements Serializable {
                 if(p.getPlayerId() == playerId) p.addPoints(points);
             }
         }
+    }
+
+    public void skipRound() throws IOException {
+        if(roundNumber < 7){
+            while(players.get(0).getCards().size() != 0){
+                for (Player p : players){
+                    List<String> cards = p.getCards();
+                    String card = cards.remove(cards.size()-1);
+                    if(cardsInGame.size() == 1){
+                        setActualColor(Deck.colorFromCard(card));
+                    }
+                    cardsInGame.put(p.getPlayerId(), card);
+                }
+                Rule rule = Server.rulesForRounds.get(roundNumber);
+                int playerId = Deck.getWinnerOfLewa(actualColor, cardsInGame);
+                addPointsToWinner(rule, playerId);
+                cardsInGame.clear();
+                setTurnForWinner(playerId);
+                setActualColor("");
+                nextLewa();
+            }
+            nextRound();
+        }
+        else {
+            while(players.get(0).getCards().size() != 0){
+                for (Player p : players){
+                    List<String> cards = p.getCards();
+                    String card = cards.remove(cards.size()-1);
+                    if(cardsInGame.size() == 1){
+                        setActualColor(Deck.colorFromCard(card));
+                    }
+                    cardsInGame.put(p.getPlayerId(), card);
+                }
+                int playerId = Deck.getWinnerOfLewa(actualColor, cardsInGame);
+                addPointsToWinnerInRound7(playerId);
+                cardsInGame.clear();
+                setTurnForWinner(playerId);
+                setActualColor("");
+                nextLewa();
+            }
+            nextRound();
+        }
+        ClientHandler.sendToPlayersInRoom(this);
     }
 }

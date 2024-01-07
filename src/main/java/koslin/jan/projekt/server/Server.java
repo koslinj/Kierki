@@ -29,7 +29,7 @@ public class Server {
      */
     public static Map<Integer, Rule> rulesForRounds = ConfigReader.getRules();
     private ServerSocket serverSocket;
-    private HashMap<Integer, ObjectOutputStream> allOutputStreams = new HashMap<>();
+    static HashMap<Integer, ObjectOutputStream> allOutputStreams = new HashMap<>();
 
     /**
      * Starts the server on the specified port and initializes the game.
