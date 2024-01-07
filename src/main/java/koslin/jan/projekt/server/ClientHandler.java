@@ -70,9 +70,9 @@ public class ClientHandler extends Thread {
         room.removePlayer(player);
         player.setTurn(false);
 
-        RoomManager res = (RoomManager) roomManager.clone();
         for (ObjectOutputStream os : allOutputStreams.values()) {
-            os.writeObject(res);
+            os.reset();
+            os.writeObject(roomManager);
             os.flush();
         }
     }
@@ -107,8 +107,8 @@ public class ClientHandler extends Thread {
             outputStream.writeObject(res);
             outputStream.flush();
 
-            RoomManager res2 = (RoomManager) roomManager.clone();
-            outputStream.writeObject(res2);
+            outputStream.reset();
+            outputStream.writeObject(roomManager);
             outputStream.flush();
         } else {
             Message res = new Message.Builder(DataType.LOGIN)
@@ -141,9 +141,9 @@ public class ClientHandler extends Thread {
             roomManager.addRoom(message);
         }
 
-        RoomManager res = (RoomManager) roomManager.clone();
         for (ObjectOutputStream os : allOutputStreams.values()) {
-            os.writeObject(res);
+            os.reset();
+            os.writeObject(roomManager);
             os.flush();
         }
     }
@@ -191,9 +191,9 @@ public class ClientHandler extends Thread {
     }
 
     private void sendToPlayersInRoom(Room room) throws IOException {
-        RoomManager res = (RoomManager) roomManager.clone();
         for(Player p : room.getPlayers()){
-            allOutputStreams.get(p.getPlayerId()).writeObject(res);
+            allOutputStreams.get(p.getPlayerId()).reset();
+            allOutputStreams.get(p.getPlayerId()).writeObject(roomManager);
             allOutputStreams.get(p.getPlayerId()).flush();
         }
     }

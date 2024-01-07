@@ -16,8 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for reading server configurations and rules from config file
+ */
 public class ConfigReader {
 
+    /**
+     * Gets port number from config file
+     * @return port number
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     public static int getPort() throws ParserConfigurationException, IOException, SAXException {
         String str = null;
         try {
@@ -29,6 +39,10 @@ public class ConfigReader {
         return Integer.parseInt(str);
     }
 
+    /**
+     * Gets ip number from config file
+     * @return ip
+     */
     public static String getIp() {
         String str = null;
         try {
@@ -40,6 +54,10 @@ public class ConfigReader {
         return str;
     }
 
+    /**
+     * Gets amount of players needed to start a game from config file
+     * @return amount of players
+     */
     public static  int getNumberOfPlayers() {
         String str = null;
         try {
@@ -51,6 +69,11 @@ public class ConfigReader {
         return Integer.parseInt(str);
     }
 
+
+    /**
+     * Gets rules for different rounds in game from config file
+     * @return Map of rules where keys are round numbers
+     */
     public static Map<Integer, Rule> getRules() {
         Map<Integer, Rule> rulesForRounds = new HashMap<>();
 
@@ -112,6 +135,14 @@ public class ConfigReader {
         return rulesForRounds;
     }
 
+    /**
+     * Helper function to get specific properties from config file
+     * @param elementName name of property we are looking for
+     * @return String value of specific property
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     private static String getConfigValue(String elementName) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

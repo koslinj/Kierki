@@ -4,7 +4,16 @@ import java.util.*;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
+/**
+ * The Deck class represents a standard deck of playing cards used in a card game.
+ * It includes methods for determining the winner of a round, dividing the deck into portions,
+ * and extracting the color information from a card's filename.
+ */
 public class Deck {
+
+    /**
+     * List of card images representing a standard deck of playing cards.
+     */
     public static List<String> cards = Arrays.asList(
             "2_of_clubs.png", "2_of_diamonds.png", "2_of_hearts.png", "2_of_spades.png",
             "3_of_clubs.png", "3_of_diamonds.png", "3_of_hearts.png", "3_of_spades.png",
@@ -21,6 +30,14 @@ public class Deck {
             "ace_of_clubs.png", "ace_of_diamonds.png", "ace_of_hearts.png", "ace_of_spades.png"
     );
 
+
+    /**
+     * Determines the winner of a round based on the actual color and the cards played by players.
+     *
+     * @param actualColor   The actual color of the round.
+     * @param cardsInGame   A HashMap containing the cards played by each player.
+     * @return The key of the winning player.
+     */
     public static Integer getWinnerOfLewa(String actualColor, HashMap<Integer, String> cardsInGame){
         Iterator<Map.Entry<Integer, String>> it = cardsInGame.entrySet().iterator();
 
@@ -54,6 +71,12 @@ public class Deck {
         return winner;
     }
 
+    /**
+     * Divides the deck into portions for each player.
+     *
+     * @param list The list of cards to be divided.
+     * @return A list containing portions of the deck for each player.
+     */
     public static List<List<String>> divideIntoPortions(List<String> list) {
         List<String> copy = new ArrayList<>(list);
         Collections.shuffle(copy);
@@ -72,6 +95,12 @@ public class Deck {
         return portions;
     }
 
+    /**
+     * Extracts the color information from a card's filename.
+     *
+     * @param card The filename of the card image.
+     * @return The color of the card (clubs, diamonds, hearts, spades).
+     */
     public static String colorFromCard(String card){
         if(card.contains("clubs")) return "clubs";
         else if(card.contains("diamonds")) return "diamonds";

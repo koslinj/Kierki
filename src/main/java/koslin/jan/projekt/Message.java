@@ -2,6 +2,11 @@ package koslin.jan.projekt;
 
 import java.io.Serializable;
 
+/**
+ * The Message class represents a serializable object used for communication between the client and server.
+ * It includes various attributes such as message type, room information, player details, and success status.
+ * The class follows the builder pattern to facilitate the creation of Message objects with optional attributes.
+ */
 public class Message implements Serializable {
     private DataType type;
     private String roomName;
@@ -77,7 +82,9 @@ public class Message implements Serializable {
         this.roomId = roomId;
     }
 
-    // Builder class
+    /**
+     * Builder class for creating instances of Message with optional attributes.
+     */
     public static class Builder {
         // Necessary property
         private final DataType type;

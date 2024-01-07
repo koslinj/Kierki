@@ -1,3 +1,10 @@
+/**
+ * This module contains packages related to the multiplayer card game.
+ * <h2>
+ * Author: Jan Koślin <br>
+ * Version: 1.0
+ * </h2>
+ */
 module koslin.jan.projekt {
     requires javafx.controls;
     requires javafx.fxml;

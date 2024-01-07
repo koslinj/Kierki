@@ -11,6 +11,10 @@ import java.util.List;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
+/**
+ * The Room class represents a room in a multiplayer card game, containing information about players,
+ * cards in the current game, and game state.
+ */
 public class Room implements Serializable {
     private String roomName;
     private int roomId;
@@ -21,6 +25,12 @@ public class Room implements Serializable {
     private int lewaNumber;
     private int startingPlayerIndex;
 
+    /**
+     * Constructs a Room with the specified name and ID.
+     *
+     * @param roomName The name of the room.
+     * @param roomId   The ID of the room.
+     */
     public Room(String roomName, int roomId) {
         this.roomName = roomName;
         this.roomId = roomId;
@@ -44,6 +54,10 @@ public class Room implements Serializable {
         return lewaNumber;
     }
 
+    /**
+     * Increments the lewa number.
+     * If lewa number is 14 then revert to first lewa
+     */
     public void nextLewa() {
         lewaNumber++;
         if(lewaNumber == 14) lewaNumber = 1;
@@ -73,10 +87,12 @@ public class Room implements Serializable {
         this.actualColor = actualColor;
     }
 
+    /**
+     * Adds a player to the room and distributes cards if the room is full.
+     *
+     * @param player The player to add.
+     */
     public void addPlayer(Player player){
-//        // TYMCZASOWO ŻEBY SZYBCIEJ SIE LOGOWAC ->>>>>>>
-//        player.setUsername("player" + (players.size()+1));
-
         players.add(player);
         if(players.size() == NUMBER_OF_PLAYERS){
             List<List<String>> divided = Deck.divideIntoPortions(Deck.cards);
@@ -88,6 +104,12 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Removes a player from the room and resets their points. If the room becomes empty,
+     * resets game state variables.
+     *
+     * @param player The player to remove.
+     */
     public void removePlayer(Player player){
         int toRemove = 0;
         for (; toRemove<players.size(); toRemove++){
@@ -104,6 +126,9 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Advances to the next round, redistributes cards, and sets the starting player.
+     */
     public void nextRound(){
         roundNumber++;
         List<List<String>> divided = Deck.divideIntoPortions(Deck.cards);
@@ -121,6 +146,9 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Advances to the next turn, updating the player with the current turn.
+     */
     public void nextTurn(){
         int i=0;
         for (; i<NUMBER_OF_PLAYERS; i++){
@@ -138,6 +166,11 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Sets the turn attribute to true for the winner of the previous round.
+     *
+     * @param playerId The ID of the winning player.
+     */
     public void setTurnForWinner(int playerId){
         for (int i = 0; i<NUMBER_OF_PLAYERS; i++){
             if (players.get(i).getPlayerId() == playerId){
@@ -148,6 +181,12 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Adds points to the winner of the current round based on the specified rule.
+     *
+     * @param rule     The rule to calculate points.
+     * @param playerId The ID of the winning player.
+     */
     public void addPointsToWinner(Rule rule, int playerId){
         int points = GameLogic.calculatePoints(rule, cardsInGame, lewaNumber);
         for (Player p : players){
@@ -155,6 +194,12 @@ public class Room implements Serializable {
         }
     }
 
+    /**
+     * Adds points to the winner of the round 7.
+     * That means points are based on all rules
+     *
+     * @param playerId The ID of the winning player.
+     */
     public void addPointsToWinnerInRound7(int playerId){
         for (Rule r : Server.rulesForRounds.values()){
             int points = GameLogic.calculatePoints(r, cardsInGame, lewaNumber);
