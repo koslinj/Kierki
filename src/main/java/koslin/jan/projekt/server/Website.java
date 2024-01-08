@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 public class Website {
     private RoomManager roomManager;
     private int websitePort;
+    private HttpServer server;
 
     /**
      * Initializes a new instance of the {@code Website} class with the specified parameters.
@@ -37,7 +38,7 @@ public class Website {
      * @throws IOException  If an I/O error occurs while starting the server.
      */
     public void startWebsite() throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(websitePort), 0);
+        server = HttpServer.create(new InetSocketAddress(websitePort), 0);
 
         // Create a context for the root endpoint ("/")
         server.createContext("/", new RootHandler());
@@ -50,6 +51,16 @@ public class Website {
         server.setExecutor(null);
         server.start();
         System.out.println("Server started on port 8080");
+    }
+
+    /**
+     * Stops the embedded HTTP server for the website.
+     */
+    public void stopWebsite() {
+        if (server != null) {
+            server.stop(0); // Parameter 0 ensures immediate shutdown
+            System.out.println("Website stopped");
+        }
     }
 
     /**
