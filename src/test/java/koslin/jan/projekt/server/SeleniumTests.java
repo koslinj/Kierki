@@ -68,7 +68,7 @@ public class SeleniumTests {
         WebElement roomInfoDiv = driver.findElement(By.id("roomInfo"));
 
         // Count the number of div elements inside the "roomInfo" div
-        int divCount = roomInfoDiv.findElements(By.tagName("div")).size();
+        int divCount = roomInfoDiv.findElements(By.className("room-div")).size();
         int expected = 1;
         Assertions.assertEquals(expected, divCount, "Wrong number of player li elements");
     }
@@ -89,7 +89,7 @@ public class SeleniumTests {
         WebElement roomInfoDiv = driver.findElement(By.id("roomInfo"));
 
         // Count the number of div elements inside the "roomInfo" div
-        int divCount = roomInfoDiv.findElements(By.tagName("div")).size();
+        int divCount = roomInfoDiv.findElements(By.className("room-div")).size();
         int expected = 3;
         Assertions.assertEquals(expected, divCount, "Wrong number of room div elements");
     }
