@@ -11,7 +11,7 @@
       fx:id="root">
     <Label fx:id="welcomeLabel"/>
     <Label text="Wprowadź nazwę dla nowego pokoju:"/>
-    <TextField fx:id="roomNameInput"/>
+    <TextField fx:id="roomNameInput" onKeyPressed="#handleKeyPress"/>
     <Button text="Zatwierdź" onAction="#handleAddingRoom"/>
     <Label fx:id="infoLabel"/>
     <padding>

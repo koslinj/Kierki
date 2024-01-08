@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
@@ -44,6 +46,23 @@ public class RoomsController {
     private void handleAddingRoom(ActionEvent event) throws IOException {
         String name = roomNameInput.getText();
         client.addRoom(name);
+        roomNameInput.clear();
+    }
+
+    /**
+     * Handles the key press event for the input field.
+     * If the pressed key is the ENTER key, triggers the sendChatMessage method.
+     *
+     * @param event The KeyEvent associated with the key press.
+     *              Contains information about the pressed key, such as the key code.
+     */
+    @FXML
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            String name = roomNameInput.getText();
+            client.addRoom(name);
+            roomNameInput.clear();
+        }
     }
 
     /**
