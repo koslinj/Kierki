@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +68,8 @@ public class ClientHandler extends Thread {
                     handleGameMessage(message);
                 } else if (message.getType() == DataType.LEAVE_ROOM) {
                     handleLeaveRoomMessage();
+                } else if (message.getType() == DataType.CHAT) {
+                    handleChatMessage(message);
                 }
             }
 
@@ -99,6 +102,24 @@ public class ClientHandler extends Thread {
             os.writeObject(roomManager);
             os.flush();
         }
+    }
+
+    /**
+     * Handles the message when a player sends a chat message, updating room chats arrayList
+     * and broadcasting changes to all clients in room.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
+    private void handleChatMessage(Message message) throws IOException {
+        int roomId = player.getRoomId();
+        Room room = roomManager.getRooms().get(roomId);
+
+        ArrayList<String> singleChat = new ArrayList<>();
+        singleChat.add(player.getUsername());
+        singleChat.add(message.getChatMessage());
+        room.getChats().add(singleChat);
+
+        sendToPlayersInRoom(room);
     }
 
     /**

@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 /**
  * The Message class represents a serializable object used for communication between the client and server.
- * It includes various attributes such as message type, room information, player details, and success status.
+ * It includes various attributes such as message type, room information, player details, chat message and success status.
  * The class follows the builder pattern to facilitate the creation of Message objects with optional attributes.
  */
 public class Message implements Serializable {
     private DataType type;
+    private String chatMessage;
     private String roomName;
     private int roomId;
     private int amountOfPlayers;
@@ -31,11 +32,16 @@ public class Message implements Serializable {
         this.join = builder.join;
         this.success = builder.success;
         this.card = builder.card;
+        this.chatMessage = builder.chatMessage;
     }
 
     // getters
     public DataType getType() {
         return type;
+    }
+
+    public String getChatMessage() {
+        return chatMessage;
     }
 
     public String getRoomName() {
@@ -90,6 +96,7 @@ public class Message implements Serializable {
         private final DataType type;
 
         // Optional properties with default values
+        private String chatMessage = "";
         private String roomName = "";
         private int roomId = 0;
         private int amountOfPlayers = 0;
@@ -108,6 +115,11 @@ public class Message implements Serializable {
         // methods for setting optional attributes
         public Builder roomName(String roomName) {
             this.roomName = roomName;
+            return this;
+        }
+
+        public Builder chatMessage(String chatMessage) {
+            this.chatMessage = chatMessage;
             return this;
         }
 

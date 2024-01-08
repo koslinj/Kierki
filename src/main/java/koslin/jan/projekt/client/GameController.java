@@ -6,8 +6,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
@@ -16,9 +20,8 @@ import koslin.jan.projekt.Room;
 import koslin.jan.projekt.RoomManager;
 import koslin.jan.projekt.server.GameLogic;
 import koslin.jan.projekt.server.Player;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
 
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
@@ -54,6 +57,8 @@ public class GameController {
     public HBox cardsContainer;
     public Group endingPanel;
     public Scene game;
+    public TextArea chat;
+    public TextField input;
 
     Client client;
     ArrayList<Label> playersNamesLabels = new ArrayList<>();
@@ -106,6 +111,9 @@ public class GameController {
     public void updateUI(RoomManager roomManager) {
         Platform.runLater(() -> {
             Room room = roomManager.getRooms().get(client.getRoomId());
+
+            displayChats(room.getChats());
+
             if(room.getRoundNumber() == 8){
                 endingPanel.setVisible(true);
             } else {
@@ -262,5 +270,46 @@ public class GameController {
         Platform.runLater(() -> {
             client.primaryStage.setScene(game);
         });
+    }
+
+    /**
+     * Handles the key press event for the input field.
+     * If the pressed key is the ENTER key, triggers the sendChatMessage method.
+     *
+     * @param event The KeyEvent associated with the key press.
+     *              Contains information about the pressed key, such as the key code.
+     */
+    @FXML
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            sendChatMessage();
+        }
+    }
+
+    /**
+     * Handles the action event triggered when the user attempts to send a chat message.
+     *
+     */
+    @FXML
+    private void sendChatMessage() {
+        String message = input.getText();
+        client.sendChatMessage(message);
+        input.clear();
+    }
+
+    /**
+     * Displays the chat messages in the application's chat area based on the provided ArrayList of chats.
+     * Each chat entry is represented as an ArrayList of two elements: [playerName, message].
+     *
+     * @param chats An ArrayList containing ArrayLists representing chat entries.
+     *              Each entry consists of [playerName, message].
+     */
+    private void displayChats(ArrayList<ArrayList<String>> chats){
+        chat.clear();
+        for (ArrayList<String> entry : chats) {
+            String player = entry.get(0);
+            String mess = entry.get(1);
+            chat.appendText(player + " -> " + mess + "\n");
+        }
     }
 }

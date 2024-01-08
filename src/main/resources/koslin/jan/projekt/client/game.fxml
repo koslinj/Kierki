@@ -4,6 +4,9 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -11,19 +14,19 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: rgb(0,160,0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="koslin.jan.projekt.client.GameController">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="770.0" style="-fx-background-color: rgb(0,160,0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="koslin.jan.projekt.client.GameController">
     <children>
         <Label fx:id="player1" layoutX="280.0" layoutY="375.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points1" layoutX="280.0" layoutY="355.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points1" layoutX="280.0" layoutY="355.0" style="-fx-font-size: 15px;" />
         <ImageView fx:id="card1" layoutX="275.0" layoutY="217.0" />
         <Label fx:id="player2" layoutX="10.0" layoutY="220.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points2" layoutX="10.0" layoutY="200.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points2" layoutX="10.0" layoutY="200.0" style="-fx-font-size: 15px;" />
         <ImageView fx:id="card2" layoutX="175.0" layoutY="145.0" />
         <Label fx:id="player3" layoutX="280.0" layoutY="5.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points3" layoutX="280.0" layoutY="25.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points3" layoutX="280.0" layoutY="25.0" style="-fx-font-size: 15px;" />
         <ImageView fx:id="card3" layoutX="275.0" layoutY="81.0" />
-        <Label fx:id="player4" layoutX="520.0" layoutY="220.0" style="-fx-font-size: 16px;" />
-        <Label fx:id="points4" layoutX="520.0" layoutY="200.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="player4" layoutX="515.0" layoutY="220.0" style="-fx-font-size: 16px;" />
+        <Label fx:id="points4" layoutX="515.0" layoutY="200.0" style="-fx-font-size: 15px;" />
         <ImageView fx:id="card4" layoutX="375.0" layoutY="145.0" />
 
         <Label fx:id="roundInfo" style="-fx-font-size: 16px;" />
@@ -43,7 +46,7 @@
                 </Button>
             </children>
         </Group>
-        <Button layoutX="500.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleBackToRooms" text="WYJDŹ Z POKOJU">
+        <Button layoutX="646.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleBackToRooms" text="WYJDŹ Z POKOJU">
         </Button>
       <Polygon fx:id="triangle3" fill="WHITE" layoutX="315.0" layoutY="75.0" scaleX="0.3" scaleY="0.2" stroke="BLACK" strokeType="INSIDE" strokeWidth="4.0" visible="false">
         <points>
@@ -85,5 +88,15 @@
             <Double fx:value="-60.0" />
          </points>
       </Polygon>
+      <ScrollPane layoutX="614.0" layoutY="92.0" prefHeight="240.0" prefWidth="154.0">
+         <content>
+            <TextArea fx:id="chat" editable="false" prefHeight="235.0" prefWidth="150.0" />
+         </content>
+      </ScrollPane>
+      <Group layoutX="571.0" layoutY="50.0" />
+      <TextField fx:id="input" layoutX="617.0" layoutY="334.0" onKeyPressed="#handleKeyPress" />
+      <Button onAction="#sendChatMessage" layoutX="663.0" layoutY="361.0" mnemonicParsing="false" text="WYŚLIJ" />
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="36.0" layoutX="630.0" layoutY="57.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
+      <Label layoutX="666.0" layoutY="60.0" style="-fx-font-size: 20;" text="CHAT" />
     </children>
 </Pane>

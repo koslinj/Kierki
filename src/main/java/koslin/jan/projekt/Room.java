@@ -15,7 +15,7 @@ import java.util.Random;
 import static koslin.jan.projekt.server.Server.NUMBER_OF_PLAYERS;
 
 /**
- * The Room class represents a room in a multiplayer card game, containing information about players,
+ * The Room class represents a room in a multiplayer card game, containing information about players, chat,
  * cards in the current game, and game state.
  */
 public class Room implements Serializable {
@@ -27,6 +27,7 @@ public class Room implements Serializable {
     private int roundNumber;
     private int lewaNumber;
     private int startingPlayerIndex;
+    private ArrayList<ArrayList<String>> chats;
 
     /**
      * Constructs a Room with the specified name and ID.
@@ -38,11 +39,16 @@ public class Room implements Serializable {
         this.roomName = roomName;
         this.roomId = roomId;
         this.players = new ArrayList<>();
+        this.chats = new ArrayList<>();
         this.cardsInGame = new HashMap<>();
         this.actualColor = "";
         this.roundNumber = 1;
         this.lewaNumber = 1;
         this.startingPlayerIndex = 0;
+    }
+
+    public ArrayList<ArrayList<String>> getChats() {
+        return chats;
     }
 
     public int getRoundNumber() {

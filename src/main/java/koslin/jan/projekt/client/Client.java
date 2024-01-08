@@ -170,6 +170,18 @@ public class Client {
     }
 
     /**
+     * Sends a chat message to all players in the room
+     *
+     * @param chatMessage The message that player want to put in the room chat.
+     */
+    public void sendChatMessage(String chatMessage) {
+        Message message = new Message.Builder(DataType.CHAT)
+                .chatMessage(chatMessage)
+                .build();
+        sendMessage(message);
+    }
+
+    /**
      * Chooses a card to put on table during the game and notifies the server.
      *
      * @param card The chosen card.
