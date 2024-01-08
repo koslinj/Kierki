@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stan Serwera</title>
+    <style>
+        html{
+            background-color: black;
+        }
+        *{
+            font-family: 'DejaVu Sans Mono', monospace;
+            color: white;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2{
+            margin-top: 50px;
+        }
+        button{
+            font-size: 130%;
+            color: black;
+        }
+        .details{
+            background-color: #111111;
+            border: 2px solid gray;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 <h1>Stan Serwera</h1>
@@ -31,31 +58,40 @@
             // Create a div for each room
             const roomDiv = document.createElement('div');
             roomDiv.innerHTML = `
-                <h2>Room Information</h2>
-                <p><strong>Room Name:</strong> ${room.roomName}</p>
-                <p><strong>Room ID:</strong> ${room.roomId}</p>
-                <p><strong>Round Number:</strong> ${room.roundNumber}</p>
-                <p><strong>Lewa Number:</strong> ${room.lewaNumber}</p>
+            <h2>Informacje o pokoju</h2>
+            <div class="details">
+                <p><strong>Nazwa pokoju:</strong> ${room.roomName}</p>
+                <p><strong>ID pokoju:</strong> ${room.roomId}</p>
+                <p><strong>Numer rozdania:</strong> ${room.roundNumber}</p>
+                <p><strong>Numer Lewy:</strong> ${room.lewaNumber}</p>
+                <p><strong>Liczba Graczy:</strong> ${room.players.length}</p>
+            </div>
+        `;
 
-                <h3>Players:</h3>
-                <ul>
+            // Check if there are players in the room
+            if (room.players.length > 0) {
+                // Add Players section
+                roomDiv.innerHTML += `
+                <h3>Gracze:</h3>
+                <ul style="list-style-type: none;" class="details">
                     ${room.players.map(player => `
                         <li id="player-li">
-                            <strong>Player ID:</strong> ${player.playerId},
-                            <strong>Username:</strong> ${player.username},
-                            <strong>Points:</strong> ${player.points}
+                            <strong>ID gracza:</strong> ${player.playerId},
+                            <strong>Nazwa gracza:</strong> ${player.username},
+                            <strong>Punkty:</strong> ${player.points}
                         </li>
                     `).join('')}
                 </ul>
             `;
 
-            // Create "Skip Round" button
-            const skipRoundButton = document.createElement('button');
-            skipRoundButton.textContent = 'Skip Round';
-            skipRoundButton.onclick = () => skipRound(room.roomId);
+                // Create "Skip Round" button
+                const skipRoundButton = document.createElement('button');
+                skipRoundButton.textContent = 'Przewin do kolejnego rozdania';
+                skipRoundButton.onclick = () => skipRound(room.roomId);
 
-            // Append the button to roomDiv
-            roomDiv.appendChild(skipRoundButton);
+                // Append the button to roomDiv
+                roomDiv.appendChild(skipRoundButton);
+            }
 
             // Append the roomDiv to roomInfoElement
             roomInfoElement.appendChild(roomDiv);
