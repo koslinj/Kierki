@@ -9,12 +9,17 @@ The game features a web interface displaying server state, including room inform
 
 ## How it looks
 
+### Login / Register and Rooms Panel
 <img src="https://github.com/koslinj/Kierki/assets/97230028/b1e5e8b9-0de9-46ba-86b9-a2bc9afc6b9f" alt="Login / Register" width="350"/>
 <img src="https://github.com/koslinj/Kierki/assets/97230028/e7697ce6-3aed-4ad6-9688-f8c911cb4a17" alt="Available rooms" width="350"/>
+
+### Screenshots from game
 <img src="https://github.com/koslinj/Kierki/assets/97230028/ea53798d-39ca-4300-8ca1-0924e607884c" alt="Game screen 1" width="700"/>
 <img src="https://github.com/koslinj/Kierki/assets/97230028/910ec75c-9b87-4b89-b960-a09563c44f23" alt="Game screen 2" width="700"/>
 <img src="https://github.com/koslinj/Kierki/assets/97230028/1a9d4d0a-ad0e-4f8f-a348-d5a166f156ab" alt="Game screen 3" width="700"/>
 <img src="https://github.com/koslinj/Kierki/assets/97230028/3891c99c-50b9-419e-b8da-6b68e7df6bae" alt="Game screen 4" width="700"/>
+
+### Website
 <img src="https://github.com/koslinj/Kierki/assets/97230028/5eda7b06-547c-4a63-a923-9ce256cffb81" alt="Website" width="500"/>
 
 
